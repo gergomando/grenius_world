@@ -7,12 +7,12 @@ import ItemScreen from './src/screens/ItemScreen';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#000',
         alignItems: 'center',
         justifyContent: 'center'
     },
     mainMenu : {
-        backgroundColor: '#D02E2E',
+        backgroundColor: '#000',
         justifyContent: 'center',
         alignItems: 'center',
     }
@@ -22,18 +22,10 @@ const SimpleApp = StackNavigator({
     Home: { screen: HomeScreen },
     Item: { screen: ItemScreen},
 }, {
+    headerMode: 'none',
     navigationOptions: {
         headerTitleStyle: { color: '#fff' },
-        headerMode:'screen',
-        header: (props) => (
-            <View style={styles.mainMenu}>
-                <TouchableHighlight onPress={() => props.navigation.navigate('Home')}>
-                    <Image source={require('./src/assets/logo.png')} />
-                </TouchableHighlight>
-            </View>
-            )
-
-        ,
+        headerMode:'none',
     }
 
 });
