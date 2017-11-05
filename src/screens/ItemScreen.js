@@ -183,18 +183,18 @@ export default class ItemScreen extends React.Component {
                               
                              <Text style={{width:110,fontSize: 32,
                               color:'#fff', paddingTop:16,paddingLeft:12, fontWeight:'bold' }}>
-                              = <Text style={{ color: '#F9D300' }}>{item.result}</Text>
+                              = <Text style={{ color: '#f2a705' }}>{item.result}</Text>
                               </Text>
                           </View>
                       </View>}
                     />
 
-                    <View>
+                    <View style={ styles.answerListWrapper }>
                       <FlatList
                         contentContainerStyle={styles.answerList}
                         data={this.state.game.results}
                         renderItem={({item}) =>
-                         <View style={styles.playBtn} key={item}>
+                         <View style={styles.playBtn}>
                             <Button
                               containerStyle={{paddingTop:13, height:56,width:56, overflow:'hidden',
                                borderRadius:28, backgroundColor: '#F9D300',borderWidth:3, borderColor:'#f2a705'}}

@@ -15,12 +15,6 @@ export default StyleSheet.create({
     padding:8,
     flex:1,
   },
-  answerList: {
-    marginTop:16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   title : {
       flexDirection: 'row',
       color: '#fff',
@@ -39,7 +33,7 @@ export default StyleSheet.create({
     borderRadius:12,
   },
   multiplierImage: {
-    width:80, 
+    width:95, 
     alignItems:'center',
     justifyContent: 'center',
     flexDirection:'row',
@@ -51,21 +45,31 @@ export default StyleSheet.create({
   },
   equationItem: {
     flexDirection:'row',
-    marginBottom:8,
-    paddingBottom: 12,
-    height:90,
+    height:96,
+    paddingTop: 6,
+    paddingBottom:6,
     justifyContent: 'center',
     borderBottomWidth:2,
-    borderBottomColor: '#bb158e',
+    borderBottomColor: 'rgba(242,167,5,0.4)',
   },
   noBorder: {
     borderBottomWidth:0,
+  },
+  answerListWrapper : {
+    paddingLeft: 12,
+    paddingRight:12,
+  },
+  answerList: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop:8,
   },
   fontRed: {
     color: '#f00',
   },
   fontYellow: {
-    color: '#F9D300',
+    color: '#f2a705',
   },
   mainMenu: {
     paddingTop:24,
@@ -87,7 +91,7 @@ export default StyleSheet.create({
     alignSelf: 'center',
   },
   point: {
-    color: '#F9D300',
+    color: '#f2a705',
     fontSize: 22,
     fontWeight:'bold',
     alignSelf:'flex-end',
