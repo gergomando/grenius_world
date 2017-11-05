@@ -11,7 +11,7 @@ export default StyleSheet.create({
     paddingBottom:16,
   },
   playBtn : {
-    width:75,
+    width:80,
     padding:8,
     flex:1,
   },
@@ -74,6 +74,7 @@ export default StyleSheet.create({
   mainMenu: {
     paddingTop:24,
     padding:12,
+    paddingBottom:0,
     flexDirection: 'row',
   },
   rightIcon: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image, StyleSheet, FlatList, Animated, AsyncStorage } from 'react-native';
+import {Text, View, Image, StyleSheet, FlatList, Animated, AsyncStorage, Easing } from 'react-native';
 import Button from 'react-native-button';
 import Svg,{ Circle,Ellipse, G, Line, Path, Polygon,Polyline,Rect,Symbol, Use, Defs, Stop} from 'react-native-svg';
 import styles from './game.style.js';
@@ -15,6 +15,8 @@ export default class ItemScreen extends React.Component {
       minutes: '00',
       seconds: '00',
       circleRadius: new Animated.Value(20),
+      lastPoint: '+5',
+      lastPointOpacity: new Animated.Value(0),
     };
 
     this.getGame();
@@ -23,6 +25,8 @@ export default class ItemScreen extends React.Component {
       this.pupilLeft.setNativeProps({ r: circleRadius.value.toString() });
       this.pupilRight.setNativeProps({ r: circleRadius.value.toString() });
     });
+
+
   }
 
   componentWillMount() {
@@ -52,14 +56,38 @@ export default class ItemScreen extends React.Component {
   }
 
   setPointView(n) {
-    const point = this.state.point + n;
+    const point = this.state.point + parseInt(n);
     this.setState({ point: point });
     this.setState({ pointView: this.padPoint(point,5) }); 
+
     AsyncStorage.setItem("point", String(point));
+  }
+
+  animateLastPoint() {
+
   }
 
   checkAnswer(answer) {
     if(answer === this.state.game.answer) {
+  
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(this.state.lastPointOpacity, {
+            toValue: 1,
+            duration: 750,
+          }),
+          Animated.timing(this.state.lastPointOpacity, {
+            delay: 2500,
+            toValue: 0,
+            duration: 550,
+          })
+        ]),
+        {
+          iterations: 1
+        }
+      ).start();
+
+
       this.setPointView(5);
       this.setState({hasRight: true});
 
@@ -67,12 +95,12 @@ export default class ItemScreen extends React.Component {
         Animated.sequence([
           Animated.timing(this.state.circleRadius, {
             toValue: 40,
-            duration: 450,
-            delay: 0
+            duration: 650,
           }),
           Animated.timing(this.state.circleRadius, {
+            delay: 0,
             toValue: 20,
-            duration: 450,
+            duration: 650,
           })
         ]),
         {
@@ -111,6 +139,7 @@ export default class ItemScreen extends React.Component {
 
     render() {
         const { params } = this.props.navigation.state;
+        let { lastPointOpacity } = this.state;
         return (
           <Image style={styles.backgroundImage}  source={require('../assets/space_bg_dark.jpg')} >
           <View style={styles.itemContainer}>
@@ -123,6 +152,11 @@ export default class ItemScreen extends React.Component {
                   {this.state.pointView}
                 </Text>
               </View>
+              <Animated.View style={{ opacity:lastPointOpacity }}>
+                <Text style={{color:'#1ac92e',alignSelf:'flex-end',paddingRight:12,fontSize:18}}>
+                  {this.state.lastPoint}
+                </Text>
+              </Animated.View>
               <View style={styles.feedbackContainer}>
                 {this.state.hasRight && <Image style={styles.rightIcon}  source={require('../assets/check.png')} />}
               </View>
@@ -196,9 +230,9 @@ export default class ItemScreen extends React.Component {
                         renderItem={({item}) =>
                          <View style={styles.playBtn}>
                             <Button
-                              containerStyle={{paddingTop:13, height:56,width:56, overflow:'hidden',
-                               borderRadius:28, backgroundColor: '#F9D300',borderWidth:3, borderColor:'#f2a705'}}
-                              style={{fontSize: 18, color: '#392701',fontWeight: 'bold'}}
+                              containerStyle={{justifyContent: 'center', height:60,width:60, overflow:'hidden',
+                               borderRadius:30, backgroundColor:'rgba(242,167,5,0.2)',borderWidth:2, borderColor:'#f2a705'}}
+                              style={{fontSize: 18, color: '#F9D300',fontWeight: 'bold'}}
                               onPress={() => this.checkAnswer(item)}>
                               {item}
                             </Button>
