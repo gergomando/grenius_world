@@ -18,7 +18,6 @@ export default class ItemScreen extends React.Component {
     };
 
     this.getGame();
-    this.gameTimer();
 
     this.state.circleRadius.addListener((circleRadius) => {
       this.pupilLeft.setNativeProps({ r: circleRadius.value.toString() });
@@ -27,6 +26,8 @@ export default class ItemScreen extends React.Component {
   }
 
   componentWillMount() {
+    this.gameTimer();
+
     AsyncStorage.getItem("point").then((value) => {
       this.setPointView(value);
       this.setState({"point": parseInt(value)});
@@ -34,12 +35,12 @@ export default class ItemScreen extends React.Component {
   }
 
   gameTimer() { 
-    let sec = 0; 
+    let sec = 3600; 
     function pad(val) { 
         return val > 9 ? val : "0" + val; 
     }
     const timer = setInterval(() => {
-        this.setState({ seconds: pad(++sec % 60) });
+        this.setState({ seconds: pad(--sec % 60) });
         this.setState({ minutes: pad(parseInt(sec / 60, 10)) });
     }, 1000);
   }
@@ -71,7 +72,7 @@ export default class ItemScreen extends React.Component {
           }),
           Animated.timing(this.state.circleRadius, {
             toValue: 20,
-            duration: 450
+            duration: 450,
           })
         ]),
         {
@@ -84,6 +85,14 @@ export default class ItemScreen extends React.Component {
       this.setState({hasRight: false});
     }
     this.getGame();
+  }
+
+  getMultiplierImage(n) {
+    const rows = [];
+    for (var i=0; i < n; i++) {
+        rows.push(<Image style={styles.variable}  source={require('../assets/hamburger.png')} />);
+    }
+    return rows;
   }
 
   getGame() {
@@ -103,6 +112,7 @@ export default class ItemScreen extends React.Component {
     render() {
         const { params } = this.props.navigation.state;
         return (
+          <Image style={styles.backgroundImage}  source={require('../assets/space_bg_dark.jpg')} >
           <View style={styles.itemContainer}>
               <View style={styles.mainMenu}>
                 <Text style={styles.timer}>
@@ -148,23 +158,34 @@ export default class ItemScreen extends React.Component {
               </Svg>
 
               <Text style={styles.title}>
-                Do <Text style={styles.fontRed}>You</Text> know the <Text style={styles.fontRed}>answer?</Text>
+                Do <Text style={styles.fontYellow}>You</Text> know the <Text style={styles.fontRed}>answer?</Text>
               </Text>
               <View style={{paddingLeft:12,paddingRight:12}}> 
                 <View style={styles.equationListWrapper}>      
-                  <Image style={styles.backgroundImage}  source={require('../assets/math_squares.png')} >
                     <FlatList
                       data={this.state.game.rows}
                       contentContainerStyle={styles.equationList}
                       renderItem={({item}) =>
                       <View style={styles.itemWrapper} key={item.result}>
-                          <Text style={styles.equationItem}>
-                              {item.multiplier_1}
-                              <Image style={styles.variable}  source={require('../assets/hamburger.png')} />
-                              {item.operator ? '+': '-'}{item.multiplier_2}
-                              <Image style={styles.variable} resizeMode={"contain"} source={require('../assets/hamburger.png')} /> 
-                              = {item.result}
-                          </Text>
+                          <View style={[styles.equationItem]}>
+                              <View style={styles.multiplierImage}>
+                              {this.getMultiplierImage(item.multiplier_1)}
+                              </View>
+                              
+                              <Text style={{width:36, alignItems:'center',fontSize: 32,
+                              color:'#fff', paddingTop:16,paddingLeft:8,paddingRight:8, fontWeight:'bold' }}>
+                              {item.operator == true ? "+": "-"}
+                              </Text>
+                              
+                              <View style={styles.multiplierImage}>
+                              {this.getMultiplierImage(item.multiplier_2)}
+                              </View>
+                              
+                             <Text style={{width:110,fontSize: 32,
+                              color:'#fff', paddingTop:16,paddingLeft:12, fontWeight:'bold' }}>
+                              = <Text style={{ color: '#F9D300' }}>{item.result}</Text>
+                              </Text>
+                          </View>
                       </View>}
                     />
 
@@ -175,19 +196,19 @@ export default class ItemScreen extends React.Component {
                         renderItem={({item}) =>
                          <View style={styles.playBtn} key={item}>
                             <Button
-                              containerStyle={{padding:10, height:45, overflow:'hidden',
-                               borderRadius:4, backgroundColor: '#F9D300'}}
-                              style={{fontSize: 18, color: '#392701'}}
+                              containerStyle={{paddingTop:13, height:56,width:56, overflow:'hidden',
+                               borderRadius:28, backgroundColor: '#F9D300',borderWidth:3, borderColor:'#f2a705'}}
+                              style={{fontSize: 18, color: '#392701',fontWeight: 'bold'}}
                               onPress={() => this.checkAnswer(item)}>
                               {item}
                             </Button>
                           </View>}
                         />
                     </View>
-                  </Image>
                 </View>
               </View>
           </View>
+          </Image>
         );
     }
 }

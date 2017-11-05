@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
     },
     title : {
       flexDirection: 'row',
-      color: '#f00',
-      fontSize: 42,
+      color: '#ff0505',
+      fontSize: 46,
       margin:'auto',
       paddingBottom: 24,
     },
@@ -19,8 +19,6 @@ const styles = StyleSheet.create({
       fontSize: 18,
     },
     playBtn: {
-      width: 140,
-      height:70,
     },
     backgroundImage : {
       flex:1,
@@ -38,19 +36,19 @@ export default class HomeScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <Image style={styles.backgroundImage}  source={require('../assets/stars.png')} >
+            <Image style={styles.backgroundImage}  source={require('../assets/space_bg_dark.jpg')} >
               <View style={styles.container}>
               <Text style={styles.title}>
-                The Game
+                <Text style={{ color: '#fff'}}>The</Text> Game
               </Text>
-              <View style={styles.playBtn}>
-                <Button
-                  containerStyle={{padding:10, height:45, overflow:'hidden', borderRadius:4, backgroundColor: '#F9D300'}}
-                  style={{fontSize: 20, color: 'white'}}
+
+               <Button
+                  containerStyle={{justifyContent: 'center', height:80,width:80, overflow:'hidden',
+                      borderRadius:40, backgroundColor: '#F9D300',borderWidth:4, borderColor:'#f2a705'}}
+                      style={{fontSize: 22, color: '#392701',fontWeight: 'bold'}}
                   onPress={() => navigate('Item',{id: '1'})}>
-                  Play!
+                  Start
                 </Button>
-              </View>
 
               <Image style={{height:320}} resizeMode="contain" source={require('../assets/maki_kez.png')} />
               </View>

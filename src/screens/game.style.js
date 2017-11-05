@@ -2,7 +2,13 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   itemContainer : {
     flex:1,
-    backgroundColor: '#000',
+  },
+  backgroundImage : {
+    flex:1,
+    resizeMode:'cover',
+    width:null,
+    height:null,
+    paddingBottom:16,
   },
   playBtn : {
     width:75,
@@ -22,29 +28,44 @@ export default StyleSheet.create({
       margin:'auto',
       alignSelf:'center',
       paddingTop:0,
-      paddingBottom:24,
+      fontWeight: 'bold',
   },
   equationList : {
     padding: 12,
     alignItems:'center',
     paddingBottom:0,
-    paddingTop:24,
   },
   equationListWrapper: {
     borderRadius:12,
-    backgroundColor: '#fff',
+  },
+  multiplierImage: {
+    width:80, 
+    alignItems:'center',
+    justifyContent: 'center',
+    flexDirection:'row',
+    flexWrap: 'wrap',    
+  },
+  variable: {
+    height: 40,
+    width:40,
   },
   equationItem: {
-    fontSize: 36,
+    flexDirection:'row',
+    marginBottom:8,
+    paddingBottom: 12,
+    height:90,
+    justifyContent: 'center',
+    borderBottomWidth:2,
+    borderBottomColor: '#bb158e',
+  },
+  noBorder: {
+    borderBottomWidth:0,
   },
   fontRed: {
     color: '#f00',
   },
-  backgroundImage : {
-    resizeMode:'contain',
-    width:null,
-    height:null,
-    paddingBottom:16,
+  fontYellow: {
+    color: '#F9D300',
   },
   mainMenu: {
     paddingTop:24,
@@ -53,12 +74,6 @@ export default StyleSheet.create({
   },
   rightIcon: {
     alignSelf: 'center',
-  },
-  variable: {
-    width: 88,
-    height: 90,
-    paddingTop:24,
-    paddingLeft:12,
   },
   feedbackContainer: {
     height: 30,
