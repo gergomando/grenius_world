@@ -3,6 +3,7 @@ import {Text, View, Image, StyleSheet, FlatList, Animated, AsyncStorage, Easing 
 import Button from 'react-native-button';
 import Svg,{ Circle,Ellipse, G, Line, Path, Polygon,Polyline,Rect,Symbol, Use, Defs, Stop} from 'react-native-svg';
 import styles from './game.style.js';
+import GameTimer from '../components/GameTimer/GameTimer';
 
 export default class ItemScreen extends React.Component {
   constructor(props) {
@@ -10,10 +11,8 @@ export default class ItemScreen extends React.Component {
     this.state = {
       game: {},
       point: 0,
-      pointView: '0',
+      pointView: '00000',
       hasRight: false,
-      minutes: '00',
-      seconds: '00',
       circleRadius: new Animated.Value(20),
       lastPoint: '+5',
       lastPointOpacity: new Animated.Value(0),
@@ -25,28 +24,6 @@ export default class ItemScreen extends React.Component {
       this.pupilLeft.setNativeProps({ r: circleRadius.value.toString() });
       this.pupilRight.setNativeProps({ r: circleRadius.value.toString() });
     });
-
-
-  }
-
-  componentWillMount() {
-    this.gameTimer();
-
-    AsyncStorage.getItem("point").then((value) => {
-      this.setPointView(value);
-      this.setState({"point": parseInt(value)});
-    }).done();
-  }
-
-  gameTimer() { 
-    let sec = 3600; 
-    function pad(val) { 
-        return val > 9 ? val : "0" + val; 
-    }
-    const timer = setInterval(() => {
-        this.setState({ seconds: pad(--sec % 60) });
-        this.setState({ minutes: pad(parseInt(sec / 60, 10)) });
-    }, 1000);
   }
 
   padPoint(n, width, z) {
@@ -59,18 +36,10 @@ export default class ItemScreen extends React.Component {
     const point = this.state.point + parseInt(n);
     this.setState({ point: point });
     this.setState({ pointView: this.padPoint(point,5) }); 
-
-    AsyncStorage.setItem("point", String(point));
   }
 
   animateLastPoint() {
-
-  }
-
-  checkAnswer(answer) {
-    if(answer === this.state.game.answer) {
-  
-      Animated.loop(
+    Animated.loop(
         Animated.sequence([
           Animated.timing(this.state.lastPointOpacity, {
             toValue: 1,
@@ -86,10 +55,13 @@ export default class ItemScreen extends React.Component {
           iterations: 1
         }
       ).start();
+  }
 
-
+  checkAnswer(answer) {
+    if(answer === this.state.game.answer) {
+      this.setState({lastPoint: '+5'});
+      this.animateLastPoint();
       this.setPointView(5);
-      this.setState({hasRight: true});
 
       Animated.loop(
         Animated.sequence([
@@ -109,9 +81,13 @@ export default class ItemScreen extends React.Component {
       ).start();
 
     } else {
-      this.setPointView(-2);
-      this.setState({hasRight: false});
+      this.setState({lastPoint: '-2'});
+      this.animateLastPoint();
+      
+      if (this.state.point > 2)
+        this.setPointView(-2);
     }
+
     this.getGame();
   }
 
@@ -124,8 +100,8 @@ export default class ItemScreen extends React.Component {
   }
 
   getGame() {
-    self = this;
-    fetch('http://geniusgames.webmusketas.hu/api/thegame', {
+    const self = this;
+    return fetch('http://geniusgames.webmusketas.hu/api/thegame', {
       method: 'GET',
       headers: {
           'Accept': 'application/json',
@@ -144,22 +120,18 @@ export default class ItemScreen extends React.Component {
           <Image style={styles.backgroundImage}  source={require('../assets/space_bg_dark.jpg')} >
           <View style={styles.itemContainer}>
               <View style={styles.mainMenu}>
-                <Text style={styles.timer}>
-                  { this.state.minutes }:{this.state.seconds}
-                </Text>
+                <GameTimer interval="120" />
                 <Text style={styles.point}>
                   <Image style={styles.pointIcon}  source={require('../assets/info_icon.png')} /> 
                   {this.state.pointView}
                 </Text>
               </View>
+
               <Animated.View style={{ opacity:lastPointOpacity }}>
                 <Text style={{color:'#1ac92e',alignSelf:'flex-end',paddingRight:12,fontSize:18}}>
                   {this.state.lastPoint}
                 </Text>
               </Animated.View>
-              <View style={styles.feedbackContainer}>
-                {this.state.hasRight && <Image style={styles.rightIcon}  source={require('../assets/check.png')} />}
-              </View>
 
               <Svg style={styles.maki} width="160" height="125" viewBox="0 0 320 250">
               <G>
