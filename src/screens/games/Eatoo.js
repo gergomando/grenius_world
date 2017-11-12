@@ -23,19 +23,36 @@ export default class Eatoo extends React.Component {
         {items: [] }, 
         {items: [] }, 
       ],
+      gameRows0Item : [],
+      gameRows1Item : [],
     };
 
     this.settings = {
       heroSpeed : 50,
     }
     this.state.heroPosX.addListener(({value}) => this._value = value);
+    this.dimension = Dimensions.get('window');
+    const hamburger = <AnimatedHamburger posY={this.dimension.height} />;
 
-    const pushHamburger = setInterval(() => {this.setState({'gameRows': this.pushHamburger()})}, 1500);
-
+    const pushHamburger = setInterval(() => {this.setState({'gameRows0Item': this.state.gameRows0Item.concat(hamburger) })}, 1500);
+    const pushHamburgera = setInterval(() => {this.setState({'gameRows1Item': this.state.gameRows1Item.concat(hamburger) })}, 1200);
   }
 
 
   setHeroPosX(x) {
+    if(this.dimension.width < (this.state.heroPosX._value + x + 50))
+      return;
+    
+    if((this.state.heroPosX._value + (x)) < 0) {
+      Animated.spring(
+      this.state.heroPosX,
+      {
+        toValue: 5,
+      }
+      ).start();
+      return;
+    }
+
     Animated.spring(
       this.state.heroPosX,
       {
@@ -53,17 +70,6 @@ export default class Eatoo extends React.Component {
     const gameFloorDimension = {w,h};
     this.setState({gameFloorDimension});
   }
-
-  pushHamburger() {
-    let gameRows = {...this.state.gameRows};
-    let dimension = Dimensions.get('window');
-    const hamburger = <AnimatedHamburger posY={dimension.height} />;
-    gameRows[0].items.push(hamburger);
-    gameRows[1].items.push(hamburger);
-    gameRows[2].items.push(hamburger);
-
-    return gameRows;
-  } 
 
   render() {
     let { lastPointOpacity, heroPosX } = this.state;
@@ -90,10 +96,10 @@ export default class Eatoo extends React.Component {
             renderToHardwareTextureAndroid={true} 
             ref={component => this._root = component} >
             <View style={[styles.gameColumn, styles.gameColumnFirst]}>
-              {this.state.gameRows[0].items}
+              {this.state.gameRows0Item}
             </View>
             <View style={styles.gameColumn}>
-              {this.state.gameRows[1].items}
+              {this.state.gameRows1Item}
             </View>
             <View style={styles.gameColumn}>
               {this.state.gameRows[2].items}
