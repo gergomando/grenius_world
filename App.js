@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, Image, TouchableHighlight } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import HomeScreen from './src/screens/HomeScreen';
-import ItemScreen from './src/screens/ItemScreen';
+import GameScreen from './src/screens/GameScreen';
 
 const styles = StyleSheet.create({
     container: {
@@ -18,9 +18,9 @@ const styles = StyleSheet.create({
     }
 });
 
-const SimpleApp = StackNavigator({
+const GreniusGames = StackNavigator({
     Home: { screen: HomeScreen },
-    Item: { screen: ItemScreen},
+    Game: { screen: GameScreen },
 }, {
     headerMode: 'none',
     navigationOptions: {
@@ -32,6 +32,7 @@ const SimpleApp = StackNavigator({
 
 export default class App extends React.Component {
     render() {
-        return <SimpleApp />;
+        console.disableYellowBox = true;
+        return <GreniusGames />;
     }
 }

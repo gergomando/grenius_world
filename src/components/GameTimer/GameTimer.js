@@ -12,7 +12,7 @@ export default class GameTimer  extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.gameTimer();
   }
 
@@ -27,7 +27,6 @@ export default class GameTimer  extends React.Component {
         this.setState({ minutes: pad(parseInt(sec / 60, 10)) });
         this.setState({ remainSec: remainSec });
         if(this.state.remainSec < 1) {
-          console.warn('alertoo');
           clearTimeout(timer);
         }
     }, 1000);
@@ -36,9 +35,9 @@ export default class GameTimer  extends React.Component {
 
   render() {
         return (
-              <Text style={styles.timer}>
-                { this.state.minutes }:{this.state.seconds}
-              </Text>
+          <Text style={styles.timer}>
+            { this.state.minutes }:{this.state.seconds}
+          </Text>
         );
     }
 }
