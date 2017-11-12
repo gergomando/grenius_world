@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image, StyleSheet, FlatList, Animated, AsyncStorage, Easing } from 'react-native';
+import {Text, View, Image, StyleSheet, FlatList, Animated, AsyncStorage, Easing, Dimensions } from 'react-native';
 import Button from 'react-native-button';
 import styles from './Eatoo.style.js';
 import GameTimer from '../../components/GameTimer/GameTimer';
@@ -14,59 +14,60 @@ export default class Eatoo extends React.Component {
       pointView: '00000',
       lastPoint: '+5',
       lastPointOpacity: new Animated.Value(0),
-      heroPositionX:new Animated.Value(100),
+      heroPosX:new Animated.Value(100),
+      gameFloorPos: {x:0,y:0},
+      gameFloorDimension: {w:0,h:0},
       gameRows: [
         {items: [] }, 
         {items: [] }, 
         {items: [] }, 
         {items: [] }, 
       ],
-      gameFloorPos: {x:0,y:0},
-      gameFloorDimension: {w:0,h:0},
     };
 
     this.settings = {
-      heroXMoveDepth : 40
+      heroSpeed : 50,
     }
+    this.state.heroPosX.addListener(({value}) => this._value = value);
 
-    this.state.heroPositionX.addListener(({value}) => this._value = value);
+    const pushHamburger = setInterval(() => {this.setState({'gameRows': this.pushHamburger()})}, 1500);
 
   }
 
-  componentDidMount() {
-    this.pushHamburger();
-  }
 
   setHeroPosX(x) {
     Animated.spring(
-      this.state.heroPositionX,
+      this.state.heroPosX,
       {
-        toValue: parseInt(this.state.heroPositionX._value) + (x),
+        toValue: this.state.heroPosX._value + x,
       }
     ).start();
   }
 
   setGameFloorPos(x,y) {
-    this.setState({gameFloorPos : {x,y}});
+    const gameFloorPos = {x,y};
+    this.setState({gameFloorPos});
   }
 
   setGameFloorDimension(w,h) {
-    this.setState({gameFloorDimension : {w,h}});
+    const gameFloorDimension = {w,h};
+    this.setState({gameFloorDimension});
   }
 
   pushHamburger() {
-    let gameRows = this.state.gameRows;
-    for(let n = 0; n < 4; n++) {
-        gameRows[0].items.push(<AnimatedHamburger posY={new Animated.Value(480)} />);
-        gameRows[1].items.push(<AnimatedHamburger posY={new Animated.Value(480)} />);
-        gameRows[3].items.push(<AnimatedHamburger posY={new Animated.Value(480)} />);
-    }
-  }
+    let gameRows = {...this.state.gameRows};
+    let dimension = Dimensions.get('window');
+    const hamburger = <AnimatedHamburger posY={dimension.height} />;
+    gameRows[0].items.push(hamburger);
+    gameRows[1].items.push(hamburger);
+    gameRows[2].items.push(hamburger);
+
+    return gameRows;
+  } 
 
   render() {
-    let { lastPointOpacity, heroPositionX } = this.state;
-    let settings = this.settings;
-
+    let { lastPointOpacity, heroPosX } = this.state;
+    let { heroSpeed } = this.settings;
     return (
       <Image style={styles.backgroundImage}  source={require('../../assets/space_bg_dark.jpg')} >
         <View style={styles.itemContainer}>
@@ -84,16 +85,10 @@ export default class Eatoo extends React.Component {
             </Text>
           </Animated.View>
 
-          <View style={styles.gameColumns}
-            ref="GameFloorWrapper"
-            onLayout={({nativeEvent}) => {
-              const self = this;
-              this.refs.GameFloorWrapper.measure((x, y, width, height, pageX, pageY) => {
-                self.setGameFloorPos(pageX,pageY);
-                self.setGameFloorDimension(width,height);
-              })
-            }}
-          >
+          <View style={styles.gameColumns} 
+            collapsable={false} 
+            renderToHardwareTextureAndroid={true} 
+            ref={component => this._root = component} >
             <View style={[styles.gameColumn, styles.gameColumnFirst]}>
               {this.state.gameRows[0].items}
             </View>
@@ -107,7 +102,7 @@ export default class Eatoo extends React.Component {
               {this.state.gameRows[3].items}
             </View>
 
-            <Animated.View  style={StyleSheet.flatten([styles.heroWrapper, {transform:[ {translateX : heroPositionX } ]} ])} >
+            <Animated.View  style={StyleSheet.flatten([styles.heroWrapper, {transform:[ {translateX : heroPosX } ]} ])} >
               <MakiSvg style={styles.hero} height="70" />
             </Animated.View>
 
@@ -117,7 +112,7 @@ export default class Eatoo extends React.Component {
                   containerStyle={{justifyContent: 'center', height:60,width:60, overflow:'hidden',
                     borderRadius:30, backgroundColor:'rgba(242,167,5,0.2)',borderWidth:2, borderColor:'#f2a705'}}
                   style={{fontSize: 18, color: '#F9D300',fontWeight: 'bold'}}
-                  onPress={() => this.setHeroPosX(-settings.heroXMoveDepth)}>
+                  onPress={() => this.setHeroPosX(-heroSpeed)}>
                   Left
                 </Button>
               </View>
@@ -127,7 +122,7 @@ export default class Eatoo extends React.Component {
                   containerStyle={{justifyContent: 'center', height:60,width:60, overflow:'hidden',
                     borderRadius:30, backgroundColor:'rgba(242,167,5,0.2)',borderWidth:2, borderColor:'#f2a705'}}
                   style={{fontSize: 18, color: '#F9D300',fontWeight: 'bold'}}
-                  onPress={() => this.setHeroPosX(settings.heroXMoveDepth)}>
+                  onPress={() => this.setHeroPosX(heroSpeed)}>
                   Right
                 </Button>
               </View>

@@ -6,7 +6,7 @@ export default class AnimatedHamburger extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      positionY: this.props.posY,
+      positionY: new Animated.Value(this.props.posY),
     };
   }
 
@@ -16,17 +16,17 @@ export default class AnimatedHamburger extends React.Component {
 
   setPositionY() {
     Animated.timing(this.state.positionY, {
-      toValue:  0,
-      duration: 5000
+      toValue:  -50,
+      duration: 5000,
+      delay: 500,
     }).start();
   }
 
   render() {
     let { positionY } = this.state;
     return (
-      <Animated.View style={ {transform:[ {translateY : positionY } ] } }>
-        <Image style={styles.hamburgerImg} source={require('../../assets/hamburger.png')} />
-      </Animated.View>
+      <Animated.Image style={styles.hamburgerImg} source={require('../../assets/hamburger.png')}
+      style={ { height: 40, width:40,position:'absolute',transform:[ {translateY : positionY } ] } } />
     );
   }
 }
