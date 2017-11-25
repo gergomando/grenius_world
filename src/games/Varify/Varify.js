@@ -4,7 +4,7 @@ import Button from 'react-native-button';
 import Svg,{ Circle,Ellipse, G, Line, Path, Polygon,Polyline,Rect,Symbol, Use, Defs, Stop} from 'react-native-svg';
 import styles from './Varify.style.js';
 import GameTimer from '../../components/GameTimer/GameTimer';
-import MakiSvg from './MakiSvg.js';
+import MakiSvg from '../MakiSvg.js';
 
 export default class Varify extends React.Component {
   constructor(props) {
@@ -34,40 +34,17 @@ export default class Varify extends React.Component {
     this.setState({ pointView: this.padPoint(point,5) }); 
   }
 
-  animateLastPoint() {
-    Animated.loop(
-        Animated.sequence([
-          Animated.timing(this.state.lastPointOpacity, {
-            toValue: 1,
-            duration: 750,
-          }),
-          Animated.timing(this.state.lastPointOpacity, {
-            delay: 2500,
-            toValue: 0,
-            duration: 550,
-          })
-        ]),
-        {
-          iterations: 1
-        }
-      ).start();
-  }
-
   checkAnswer(answer) {
     if(answer === this.state.game.answer) {
       this.setState({lastPoint: '+5'});
       this.setState({animatePupil:true});
-      this.animateLastPoint();
       this.setPointView(5);
-
     } else {
       this.setState({lastPoint: '-2'});
       this.animateLastPoint();
-      
       if (this.state.point > 2)
         this.setPointView(-2);
     }
-
     this.getGame();
   }
 

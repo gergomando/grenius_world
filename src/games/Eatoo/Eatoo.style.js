@@ -10,52 +10,6 @@ export default StyleSheet.create({
     height:null,
     paddingBottom:16,
   },
-  title : {
-      flexDirection: 'row',
-      color: '#fff',
-      fontSize: 26,
-      margin:'auto',
-      alignSelf:'center',
-      paddingTop:0,
-      fontWeight: 'bold',
-  },
-  fontRed: {
-    color: '#f00',
-  },
-  fontYellow: {
-    color: '#f2a705',
-  },
-  mainMenu: {
-    paddingTop:24,
-    padding:12,
-    paddingBottom:0,
-    flexDirection: 'row',
-  },
-  rightIcon: {
-    alignSelf: 'center',
-  },
-  feedbackContainer: {
-    height: 30,
-    display: 'none',
-  },
-  pointIcon: {
-    height: 40,
-    width: 42,
-  },
-  point: {
-    color: '#f2a705',
-    fontSize: 22,
-    fontWeight:'bold',
-    alignSelf:'flex-end',
-    justifyContent: 'flex-end',
-  },
-  timer: {
-    flex: 1,
-    alignSelf: 'flex-start',
-    color: '#1ac92e',
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
   gameColumns: {
     flexDirection: 'row',
     flex: 1,
@@ -99,5 +53,15 @@ export default StyleSheet.create({
   },
   controllersBtn: {
     padding: 8,
+  },
+  controllerCircle: {
+    justifyContent: 'center', 
+    height:60,
+    width:60,
+    overflow:'hidden',
+    borderRadius:30,
+    backgroundColor:'rgba(242,167,5,0.2)',
+    borderWidth:2, 
+    borderColor:'#f2a705',
   },
 });

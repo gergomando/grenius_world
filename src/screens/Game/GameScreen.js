@@ -1,0 +1,27 @@
+import React from 'react';
+import Varify from '../../games/Varify/Varify';
+import Eatoo from '../../games/Eatoo/Eatoo';
+
+const components = {
+  Varify,
+  Eatoo
+};
+
+export default class GameScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    const { params } = this.props.navigation.state;
+  	this.gameType = params.gameType;
+  }
+
+  getGame = gameType => {
+  	var Game = components[gameType];
+		return <Game />;
+  }
+
+  render() {
+    return (
+       this.getGame(this.gameType)
+    );
+	}
+}
