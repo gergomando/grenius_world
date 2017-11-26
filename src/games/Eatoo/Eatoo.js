@@ -13,19 +13,28 @@ export default class Eatoo extends React.Component {
       point: 0,
       lastPoint: '+5',
       lastPointOpacity: new Animated.Value(0),
-      heroPosX:new Animated.Value(100),
+      animatePupil: false,
+      heroPosX:new Animated.Value(180),
       gameFloorPos: {x:0,y:0},
       gameFloorDimension: {w:0,h:0},
       gameRows: [
-        {items: [1,1,1,1,1], posX:40, }, 
-        {items: [1,1,1],posX: 140 }, 
-        {items: [1,1], posX: 240, }, 
-        {items: [1,1,1,1,1,1,1,1,1], posX: 280 }, 
+        {items: [
+          {type:'hamburger'},
+        ], posX:20, }, 
+        {items: [
+          {type:'hamburger'},
+        ], posX:100, }, 
+        {items: [
+          {type:'hamburger'},
+        ], posX:180, }, 
+        {items: [
+          {type:'hamburger'},
+        ], posX:260, }, 
       ],
     };
 
     this.settings = {
-      heroSpeed : 50,
+      heroSpeed : 40,
     }
     this.dimension = Dimensions.get('window');    
     this.state.heroPosX.addListener(({value}) => this._value = value);
@@ -35,10 +44,12 @@ export default class Eatoo extends React.Component {
     if(this.dimension.width < (this.state.heroPosX._value + x + 50))
       return;
     
-    if((this.state.heroPosX._value + (x)) < 0) {
+    if((this.state.heroPosX._value + (x)) < 10) {
       Animated.spring(this.state.heroPosX, {
-        toValue: 5,
+        toValue: 10,
       }).start();
+
+      return;
     }
 
     Animated.spring(this.state.heroPosX, {
@@ -56,6 +67,11 @@ export default class Eatoo extends React.Component {
     this.setState({gameFloorDimension});
   }
 
+  animatePupil() {
+    console.log('animatePupil');
+    this.setState({ animatePupil : true });
+  }
+
   renderGameRows = () => (
     this.state.gameRows.map((row,i) => (
       <View style={[
@@ -66,8 +82,10 @@ export default class Eatoo extends React.Component {
         <GameRowItems 
           items={row.items} 
           heroPosY={0} 
-          rowPosX={row.posX}
           heroPosX={this.state.heroPosX}  
+          enemyX={row.posX}
+          rowNumber={i+1}
+          animatePupil={() => this.animatePupil()}
           />
       </View>
     ))
@@ -84,7 +102,7 @@ export default class Eatoo extends React.Component {
           <View style={styles.gameColumns} >
               {this.renderGameRows()}
             <Animated.View  style={StyleSheet.flatten([styles.heroWrapper, {transform:[ {translateX : heroPosX } ]} ])} >
-              <MakiSvg style={styles.hero} height="70" />
+              <MakiSvg style={styles.hero} height="70" animate={this.state.animatePupil} />
             </Animated.View>
 
             <View style={styles.controllersWrapper}>

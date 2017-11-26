@@ -29,13 +29,10 @@ export default StyleSheet.create({
   gameColumnLast: {
     borderRightWidth: 0,
   },
-  hamburgerWrapper: {
-    position: 'absolute',
-    bottom: 480,
-  },
   hamburgerImg: {
     height: 40,
     width:40,
+    position:'absolute',
   },
   heroWrapper: {
     position: 'absolute',

@@ -8,29 +8,46 @@ export default class GameRowItems extends React.Component {
     super(props);
     this.dimension = Dimensions.get('window');    
     this.state = {
-      items : this.props.items,
       heroPosX: this.props.heroPosX,
+      heroPosY: this.props.heroPosY,
       enemies: [],
+      rowEmpty: false,
       posY: new Animated.Value(this.dimension.height+50),
     } 
 
+    this.state.posY.addListener(({value}) => this._value = value);
     this.state.heroPosX.addListener((heroPosX) => {
-        if(this.props.rowPosX < heroPosX.value) {
-          this.drawItems([]); 
+        if(!this.state.rowEmpty && this.heroInEnemyRange({x: heroPosX.value, y: this.state.heroPosY})) {
+          this.setState({ rowEmpty : true , enemies: []});
+          this.props.animatePupil();  
         }
     });
   }
 
+  heroInEnemyRange = (hero) => {
+    return this.heroXInEnemyRange(hero.x) && this.heroYInEnemyRange(hero.y); 
+  }
+
+  heroYInEnemyRange = (heroY) => {
+    return this.state.posY._value < (heroY + 30) ? true : false;
+  }
+
+  heroXInEnemyRange = (heroX) => {
+    return this.props.enemyX < heroX && (this.props.enemyX + 40) > heroX ? true : false;
+  }
+
   componentDidMount() {
-    this.drawItems(this.state.items);
+    this.drawItems(this.props.items);
   }
 
   drawItems(items) {
     const enemies = [];
-    items.forEach(() => {
+
+    items.forEach((item, i) => {
       enemies.push(
-        <AnimatedHamburger 
-          posY={this.state.posY} 
+        <AnimatedHamburger
+          posY={this.state.posY}
+          heroPosX={this.props.heroPosX}
         />
       );
     });
