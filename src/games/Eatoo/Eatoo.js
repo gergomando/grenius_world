@@ -3,7 +3,7 @@ import {Text, View, Image, StyleSheet, FlatList, Animated, AsyncStorage, Easing,
 import Button from 'react-native-button';
 import styles from './Eatoo.style.js';
 import MakiSvg from "../MakiSvg";
-import GameRowItems from "./GameRowItems";
+import GameRow from "./GameRow";
 import TopMenu from '../../components/TopMenu/TopMenu';
 
 export default class Eatoo extends React.Component {
@@ -78,7 +78,7 @@ export default class Eatoo extends React.Component {
         i === 0 && styles.gameColumnFirst, 
         i === (this.state.gameRows.length - 1) && styles.gameColumnLast,
         ]}>
-        <GameRowItems 
+        <GameRow 
           items={row.items} 
           heroPosY={0} 
           heroPosX={this.state.heroPosX}  

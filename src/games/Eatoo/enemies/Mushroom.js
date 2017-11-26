@@ -1,15 +1,14 @@
 import React from 'react';
 import {View, Image, StyleSheet, Animated, Easing } from 'react-native';
-import styles from './Eatoo.style.js';
 
-export default class AnimatedHamburger extends React.Component {
+export default class Mushroom extends React.Component {
   componentWillUpdate(nextProps) {
     console.log(this.props, nextProps);
   }
 
   render() {
     return (
-      <Animated.Image source={require('../../assets/hamburger.png')}
+      <Animated.Image source={require('../../assets/mushroom.png')}
         style={
           { 
             position: 'absolute',

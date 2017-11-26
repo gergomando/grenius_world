@@ -1,9 +1,10 @@
 import React from 'react';
 import {View, Image, StyleSheet, Animated, Easing, Dimensions, Text } from 'react-native';
 import styles from './Eatoo.style.js';
-import AnimatedHamburger from "./AnimatedHamburger";
+import Hamburger from "./enemies/Hamburger";
+import Mushroom from "./enemies/Mushroom";
 
-export default class GameRowItems extends React.Component {
+export default class GameRow extends React.Component {
   constructor(props) {
     super(props);
     this.dimension = Dimensions.get('window');    
@@ -52,7 +53,7 @@ export default class GameRowItems extends React.Component {
 
     items.forEach((item, i) => {
       enemies.push(
-        <AnimatedHamburger
+        <Hamburger
           posY={this.state.posY}
           heroPosX={this.props.heroPosX}
           removeItem={(i) => this.removeItem(i)}
