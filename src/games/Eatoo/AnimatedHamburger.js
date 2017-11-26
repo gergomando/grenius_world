@@ -3,10 +3,14 @@ import {View, Image, StyleSheet, Animated, Easing } from 'react-native';
 import styles from './Eatoo.style.js';
 
 export default class AnimatedHamburger extends React.Component {
+  componentWillUpdate(nextProps) {
+    console.log(this.props, nextProps);
+  }
+
   render() {
     return (
       <Animated.Image source={require('../../assets/hamburger.png')}
-        style={ 
+        style={
           { 
             position: 'absolute',
             height: 40, 

@@ -2,7 +2,7 @@
   "expo": {
    "name": "Grenius Grimes",
    "icon": "./src/assets/maki_head.png",
-   "version": "0.1.0",
+   "version": "0.2.0",
    "slug": "grenius-grimes",
    "sdkVersion": "21.0.0",
    "ios": {

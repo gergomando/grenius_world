@@ -68,7 +68,6 @@ export default class Eatoo extends React.Component {
   }
 
   animatePupil() {
-    console.log('animatePupil');
     this.setState({ animatePupil : true });
   }
 

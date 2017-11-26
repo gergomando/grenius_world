@@ -18,8 +18,9 @@ export default class GameRowItems extends React.Component {
     this.state.posY.addListener(({value}) => this._value = value);
     this.state.heroPosX.addListener((heroPosX) => {
         if(!this.state.rowEmpty && this.heroInEnemyRange({x: heroPosX.value, y: this.state.heroPosY})) {
-          this.setState({ rowEmpty : true , enemies: []});
-          this.props.animatePupil();  
+          this.setState({ rowEmpty : true , enemies: []}, () => {
+            this.props.animatePupil();  
+          });
         }
     });
   }
@@ -40,6 +41,12 @@ export default class GameRowItems extends React.Component {
     this.drawItems(this.props.items);
   }
 
+  removeItem = (index) => {
+    const enemies = [...this.state.enemies];
+    enemies.splice(index,1);
+    this.setState({ enemies });
+  }
+
   drawItems(items) {
     const enemies = [];
 
@@ -48,6 +55,7 @@ export default class GameRowItems extends React.Component {
         <AnimatedHamburger
           posY={this.state.posY}
           heroPosX={this.props.heroPosX}
+          removeItem={(i) => this.removeItem(i)}
         />
       );
     });

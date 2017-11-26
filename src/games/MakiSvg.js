@@ -22,7 +22,6 @@ export default class MakiSvg extends React.Component {
   }
 
   animatePupil() {
-    console.log('animálódok Mándó animálódok...')
     Animated.loop(
         Animated.sequence([
           Animated.timing(this.state.circleRadius, {
