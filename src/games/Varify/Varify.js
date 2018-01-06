@@ -1,9 +1,7 @@
 import React from 'react';
-import {Text, View, Image, StyleSheet, FlatList, Animated, AsyncStorage, Easing } from 'react-native';
+import {Text, View, Image, StyleSheet, FlatList } from 'react-native';
 import Button from 'react-native-button';
-import Svg,{ Circle,Ellipse, G, Line, Path, Polygon,Polyline,Rect,Symbol, Use, Defs, Stop} from 'react-native-svg';
 import styles from './Varify.style.js';
-import GameTimer from '../../components/GameTimer/GameTimer';
 import MakiSvg from '../MakiSvg.js';
 import TopMenu from '../../components/TopMenu/TopMenu';
 
@@ -11,7 +9,7 @@ export default class Varify extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      game:{},
+      game:{ rows: [], results: [] },
       games: [],
       current: 0,
       point: 0,
@@ -29,33 +27,32 @@ export default class Varify extends React.Component {
   }
 
   checkAnswer = (answer) => {
-    if(answer === this.state.game.answer) {
-      const rightAnswerNr = this.state.rightAnswerNr + 1;
-      this.setState({
-        animatePupil:true,
-        rightAnswerNr,
-      });
+    const isRight = answer === this.state.game.answer;
+    const rightAnswerNr = isRight ? this.state.rightAnswerNr + 1 : this.state.rightAnswerNr;
+    if(isRight) {
+      this.setState({ animatePupil:true, rightAnswerNr });
       this.changePoint(5);
     } else {
       this.setState({animatePupil:false});
       this.changePoint(-2);
     }
-    this.nextGame();
+    const isLastRound = this.state.roundNr === this.state.games.length;
+    if(isLastRound) {
+      const params = { roundNr: this.state.roundNr, rightAnswerNr };
+      this.props.navigation.navigate('Analyze', {...params});
+    } else {
+      this.nextGame();
+    }
   }
 
   nextGame = () => {
     const roundNr = this.state.roundNr + 1;
-    if(roundNr > 10) {
-      this.props.navigation.navigate('Home');
-    }
-
     this.setState({ roundNr });
     const current = this.state.current + 1;
     if(this.state.games[current]) {
       this.setState({ game: {...this.state.games[current].game} });
       this.setState({ current });
-    }
-    else {
+    } else {
       this.setState({ current: 0 });
       this.getGame();
     }
@@ -117,7 +114,7 @@ export default class Varify extends React.Component {
                           </View>
                           
                           <Text style={styles.resultWrapper}>
-                            = <Text style={styles.result}>{item.result}</Text>
+                            = <Text style={styles.result}>{`${item.result}`}</Text>
                           </Text>
                       </View>
                   </View>}
@@ -128,12 +125,12 @@ export default class Varify extends React.Component {
                     contentContainerStyle={styles.answerList}
                     data={this.state.game.results}
                     renderItem={({item}) =>
-                     <View style={styles.playBtn}>
+                     <View style={styles.playBtn} key={item}>
                         <Button
                           containerStyle={styles.answerBtn}
                           style={styles.answerBtnText}
                           onPress={() => this.checkAnswer(item)}>
-                          {item}
+                          {`${item}`}
                         </Button>
                       </View>}
                     />

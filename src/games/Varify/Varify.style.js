@@ -37,8 +37,8 @@ export default StyleSheet.create({
     flexWrap: 'wrap',    
   },
   variable: {
-    height: 40,
-    width:40,
+    height: 36,
+    width:36,
   },
   equationItem: {
     flexDirection:'row',
