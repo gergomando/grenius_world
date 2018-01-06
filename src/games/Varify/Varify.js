@@ -5,6 +5,7 @@ import Svg,{ Circle,Ellipse, G, Line, Path, Polygon,Polyline,Rect,Symbol, Use, D
 import styles from './Varify.style.js';
 import GameTimer from '../../components/GameTimer/GameTimer';
 import MakiSvg from '../MakiSvg.js';
+import TopMenu from '../../components/TopMenu/TopMenu';
 
 export default class Varify extends React.Component {
   constructor(props) {
@@ -12,38 +13,25 @@ export default class Varify extends React.Component {
     this.state = {
       game:{},
       point: 0,
-      pointView: '00000',
-      hasRight: false,
       animatePupil: false,
-      lastPoint: '+5',
-      lastPointOpacity: new Animated.Value(0),
     };
 
     this.getGame();
   }
 
-  padPoint(n, width, z) {
-    z = z || '0';
-    n = n + '';
-    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+  changePoint = (n) => {
+    let point = this.state.point + n;
+    point = point > 0 ? point : 0;
+    this.setState({ point });
   }
 
-  setPointView(n) {
-    const point = this.state.point + parseInt(n);
-    this.setState({ point: point });
-    this.setState({ pointView: this.padPoint(point,5) }); 
-  }
-
-  checkAnswer(answer) {
+  checkAnswer = (answer) => {
     if(answer === this.state.game.answer) {
-      this.setState({lastPoint: '+5'});
       this.setState({animatePupil:true});
-      this.setPointView(5);
+      this.changePoint(5);
     } else {
-      this.setState({lastPoint: '-2'});
-      this.animateLastPoint();
-      if (this.state.point > 2)
-        this.setPointView(-2);
+      this.setState({animatePupil:false});
+      this.changePoint(-2);
     }
     this.getGame();
   }
@@ -71,75 +59,56 @@ export default class Varify extends React.Component {
   }
 
     render() {
-        let { lastPointOpacity } = this.state;
         return (
           <Image style={styles.backgroundImage}  source={require('../../assets/space_bg_dark.jpg')} >
           <View style={styles.itemContainer}>
-              <View style={styles.mainMenu}>
-                <GameTimer interval="120" />
-                <Text style={styles.point}>
-                  <Image style={styles.pointIcon}  source={require('../../assets/info_icon.png')} /> 
-                  {this.state.pointView}
-                </Text>
-              </View>
-
-              <Animated.View style={{ opacity:lastPointOpacity }}>
-                <Text style={{color:'#1ac92e',alignSelf:'flex-end',paddingRight:12,fontSize:18}}>
-                  {this.state.lastPoint}
-                </Text>
-              </Animated.View>
-
+              <TopMenu point={this.state.point} />
               <MakiSvg animate={this.state.animatePupil} />
 
               <Text style={styles.title}>
                 Do <Text style={styles.fontYellow}>You</Text> know the <Text style={styles.fontRed}>answer?</Text>
               </Text>
-              <View style={{paddingLeft:12,paddingRight:12}}> 
-                <View style={styles.equationListWrapper}>      
-                    <FlatList
-                      data={this.state.game.rows}
-                      contentContainerStyle={styles.equationList}
-                      renderItem={({item}) =>
-                      <View style={styles.itemWrapper} key={item.result}>
-                          <View style={[styles.equationItem]}>
-                              <View style={styles.multiplierImage}>
+              <View>      
+                  <FlatList
+                    data={this.state.game.rows}
+                    contentContainerStyle={styles.equationList}
+                    renderItem={({item}) =>
+                    <View style={styles.itemWrapper} key={item.result}>
+                        <View style={styles.equationItem}>
+                            <View style={styles.multiplierImage}>
                               {this.getMultiplierImage(item.multiplier_1)}
-                              </View>
-                              
-                              <Text style={{width:36, alignItems:'center',fontSize: 32,
-                              color:'#fff', paddingTop:16,paddingLeft:8,paddingRight:8, fontWeight:'bold' }}>
+                            </View>
+                            
+                            <Text style={styles.operator}>
                               {item.operator == true ? "+": "-"}
-                              </Text>
-                              
-                              <View style={styles.multiplierImage}>
+                            </Text>
+                            
+                            <View style={styles.multiplierImage}>
                               {this.getMultiplierImage(item.multiplier_2)}
-                              </View>
-                              
-                             <Text style={{width:110,fontSize: 32,
-                              color:'#fff', paddingTop:16,paddingLeft:12, fontWeight:'bold' }}>
-                              = <Text style={{ color: '#f2a705' }}>{item.result}</Text>
-                              </Text>
-                          </View>
-                      </View>}
-                    />
+                            </View>
+                            
+                            <Text style={styles.resultWrapper}>
+                              = <Text style={styles.result}>{item.result}</Text>
+                            </Text>
+                        </View>
+                    </View>}
+                  />
 
-                    <View style={ styles.answerListWrapper }>
-                      <FlatList
-                        contentContainerStyle={styles.answerList}
-                        data={this.state.game.results}
-                        renderItem={({item}) =>
-                         <View style={styles.playBtn}>
-                            <Button
-                              containerStyle={{justifyContent: 'center', height:60,width:60, overflow:'hidden',
-                               borderRadius:30, backgroundColor:'rgba(242,167,5,0.2)',borderWidth:2, borderColor:'#f2a705'}}
-                              style={{fontSize: 18, color: '#F9D300',fontWeight: 'bold'}}
-                              onPress={() => this.checkAnswer(item)}>
-                              {item}
-                            </Button>
-                          </View>}
-                        />
-                    </View>
-                </View>
+                  <View style={ styles.answerListWrapper }>
+                    <FlatList
+                      contentContainerStyle={styles.answerList}
+                      data={this.state.game.results}
+                      renderItem={({item}) =>
+                       <View style={styles.playBtn}>
+                          <Button
+                            containerStyle={styles.answerBtn}
+                            style={styles.answerBtnText}
+                            onPress={() => this.checkAnswer(item)}>
+                            {item}
+                          </Button>
+                        </View>}
+                      />
+                  </View>
               </View>
           </View>
           </Image>

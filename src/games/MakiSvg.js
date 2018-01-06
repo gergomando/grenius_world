@@ -48,14 +48,14 @@ export default class MakiSvg extends React.Component {
           <Svg style={styles.maki} width={this.props.height ? (this.props.height*1.28) : 160} height={ this.props.height || 125} viewBox="0 0 320 250">
               <G>
                 <Circle fill="#321E0F" cx="45.1" cy="49.5" r="45.1"/>
-                <Circle  fill="#633A23" cx="50.3" cy="54.7" r="30.7"/>
-                <Circle  fill="#321E0F"  cx="213.9" cy="45.1" r="45.1"/>
-                <Circle  fill="#633A23" cx="208.7" cy="50.3" r="30.7"/>
+                <Circle fill="#633A23" cx="50.3" cy="54.7" r="30.7"/>
+                <Circle fill="#321E0F"  cx="213.9" cy="45.1" r="45.1"/>
+                <Circle fill="#633A23" cx="208.7" cy="50.3" r="30.7"/>
                 <Path  fill="#54321C" d="M47.4,70c0,0,87.5-93.2,172.8-2.4c92.6,98.5-12.9,149.5-3.9,145c-22.9,16.1-115.8,40.8-173.2-20.2
                   C-1.7,143.5,47.4,70,47.4,70z"/>
-                <Ellipse  fill="#6E4D2B" cx="143.1" cy="172.4" rx="80.4" ry="41"/>
+                <Ellipse fill="#6E4D2B" cx="143.1" cy="172.4" rx="80.4" ry="41"/>
                 <Circle fill="#FFFFFF" cx="89.2" cy="109.8" r="50.3"/>
-                <Circle  fill="#FFFFFF" stroke="#321E0F" cx="188.4" cy="109.8" r="50.3"/>
+                <Circle fill="#FFFFFF" stroke="#321E0F" cx="188.4" cy="109.8" r="50.3"/>
                 <Ellipse cx="142.1" cy="165.2" rx="25.2" ry="11"/>
                 <Ellipse fill="#FFFFFF" cx="137.7" cy="165.2" rx="7.6" ry="3.3"/>
                 <Path d="M174.4,187.5c-19.3,46.7-57.9,3.3-57.9,3.3c-2.3-3.6,1.3-5.1,2.4-5.4s4.9-2,18.6-0.2S177.6,179.8,174.4,187.5z"/>

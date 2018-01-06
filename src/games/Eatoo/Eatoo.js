@@ -82,7 +82,7 @@ export default class Eatoo extends React.Component {
           items={row.items} 
           heroPosY={0} 
           heroPosX={this.state.heroPosX}  
-          enemyX={row.posX}
+          rowX={row.posX}
           rowNumber={i+1}
           animatePupil={() => this.animatePupil()}
           />
