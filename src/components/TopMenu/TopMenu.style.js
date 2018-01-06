@@ -3,8 +3,12 @@ export default StyleSheet.create({
   mainMenu: {
     paddingTop:24,
     padding:12,
+    paddingRight:0,
     paddingBottom:0,
     flexDirection: 'row',
+  },
+  levelMenu: {
+    paddingRight:12,
   },
   rightIcon: {
     alignSelf: 'center',
@@ -13,16 +17,28 @@ export default StyleSheet.create({
     height: 30,
     display: 'none',
   },
+  timer: {
+    flex: 1,
+    color: '#1ac92e',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
   pointIcon: {
     height: 40,
     width: 42,
+  },
+  level: {
+    color: 'white',
+    textAlign:'right',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   point: {
     color: '#f2a705',
     fontSize: 22,
     fontWeight:'bold',
-    alignSelf:'flex-end',
-    justifyContent: 'flex-end',
+    flex:1,
+    textAlign: 'right',
   },
   lastpoint: {
     color:'#1ac92e',
@@ -30,11 +46,7 @@ export default StyleSheet.create({
     paddingRight:12,
     fontSize:18,
   },
-  timer: {
-    flex: 1,
-    alignSelf: 'flex-start',
-    color: '#1ac92e',
-    fontWeight: 'bold',
-    fontSize: 20,
+  rightAnswerNr: {
+    color:'#1ac92e',
   },
 });

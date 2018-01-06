@@ -17,20 +17,13 @@ export default class HomeScreen extends React.Component {
           <Text style={styles.title}>
             <Text style={{ color: '#fff'}}>The</Text> Game
           </Text>
-           <Button
+            <Image style={styles.heroImg} resizeMode="contain" source={require('../../assets/maki_head.png')} />
+            <Button
               containerStyle={styles.playBtn} 
               style={styles.playBtnInside}
               onPress={() => navigate('Game',{gameType: 'Varify'})}>
-              Start Varify
+              Press to Play
             </Button>
-
-            <Button
-              containerStyle={styles.playBtn}
-              style={styles.playBtnInside}
-              onPress={() => navigate('Game',{gameType: 'Eatoo'})}>
-              Start Eatoo
-            </Button>
-            <Image style={{height:80}} resizeMode="contain" source={require('../../assets/maki_head.png')} />
           </View>
         </Image>
       );

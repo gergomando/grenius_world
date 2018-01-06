@@ -12,13 +12,16 @@ export default class Varify extends React.Component {
     super(props);
     this.state = {
       game:{},
+      games: [],
+      current: 0,
       point: 0,
       animatePupil: false,
+      roundNr: 1,
+      rightAnswerNr: 0,
     };
 
     this.getGame();
   }
-
   changePoint = (n) => {
     let point = this.state.point + n;
     point = point > 0 ? point : 0;
@@ -27,13 +30,35 @@ export default class Varify extends React.Component {
 
   checkAnswer = (answer) => {
     if(answer === this.state.game.answer) {
-      this.setState({animatePupil:true});
+      const rightAnswerNr = this.state.rightAnswerNr + 1;
+      this.setState({
+        animatePupil:true,
+        rightAnswerNr,
+      });
       this.changePoint(5);
     } else {
       this.setState({animatePupil:false});
       this.changePoint(-2);
     }
-    this.getGame();
+    this.nextGame();
+  }
+
+  nextGame = () => {
+    const roundNr = this.state.roundNr + 1;
+    if(roundNr > 10) {
+      this.props.navigation.navigate('Home');
+    }
+
+    this.setState({ roundNr });
+    const current = this.state.current + 1;
+    if(this.state.games[current]) {
+      this.setState({ game: {...this.state.games[current].game} });
+      this.setState({ current });
+    }
+    else {
+      this.setState({ current: 0 });
+      this.getGame();
+    }
   }
 
   getMultiplierImage(n) {
@@ -49,69 +74,73 @@ export default class Varify extends React.Component {
     return fetch('http://geniusgames.webmusketas.hu/api/thegame', {
       method: 'GET',
       headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-    }
-    }).then((response) => response.json())
-      .then((responseData) => {
-        self.setState({ game:responseData.game.game });
-    }).done();
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })
+      .then((response) => response.json())
+      .then(data => self.setState({
+        games:data.games,
+        game: data.games[0].game,
+      })
+    );
   }
 
-    render() {
-        return (
-          <Image style={styles.backgroundImage}  source={require('../../assets/space_bg_dark.jpg')} >
-          <View style={styles.itemContainer}>
-              <TopMenu point={this.state.point} />
-              <MakiSvg animate={this.state.animatePupil} />
+  render() {
+      return (
+        <Image style={styles.backgroundImage}  source={require('../../assets/space_bg_dark.jpg')} >
+        <View style={styles.itemContainer}>
+            <TopMenu point={this.state.point} roundNr={this.state.roundNr} rightAnswerNr={this.state.rightAnswerNr} />
+            <View style={styles.maki}>
+              <MakiSvg height={100} animate={this.state.animatePupil} />
+            </View>
+            <Text style={styles.title}>
+              Do <Text style={styles.fontYellow}>You</Text> know the <Text style={styles.fontRed}>answer?</Text>
+            </Text>
+            <View>      
+                <FlatList
+                  data={this.state.game.rows}
+                  contentContainerStyle={styles.equationList}
+                  renderItem={({item}) =>
+                  <View style={styles.itemWrapper} key={item.result}>
+                      <View style={styles.equationItem}>
+                          <View style={styles.multiplierImage}>
+                            {this.getMultiplierImage(item.multiplier_1)}
+                          </View>
+                          
+                          <Text style={styles.operator}>
+                            {item.operator == true ? "+": "-"}
+                          </Text>
+                          
+                          <View style={styles.multiplierImage}>
+                            {this.getMultiplierImage(item.multiplier_2)}
+                          </View>
+                          
+                          <Text style={styles.resultWrapper}>
+                            = <Text style={styles.result}>{item.result}</Text>
+                          </Text>
+                      </View>
+                  </View>}
+                />
 
-              <Text style={styles.title}>
-                Do <Text style={styles.fontYellow}>You</Text> know the <Text style={styles.fontRed}>answer?</Text>
-              </Text>
-              <View>      
+                <View style={ styles.answerListWrapper }>
                   <FlatList
-                    data={this.state.game.rows}
-                    contentContainerStyle={styles.equationList}
+                    contentContainerStyle={styles.answerList}
+                    data={this.state.game.results}
                     renderItem={({item}) =>
-                    <View style={styles.itemWrapper} key={item.result}>
-                        <View style={styles.equationItem}>
-                            <View style={styles.multiplierImage}>
-                              {this.getMultiplierImage(item.multiplier_1)}
-                            </View>
-                            
-                            <Text style={styles.operator}>
-                              {item.operator == true ? "+": "-"}
-                            </Text>
-                            
-                            <View style={styles.multiplierImage}>
-                              {this.getMultiplierImage(item.multiplier_2)}
-                            </View>
-                            
-                            <Text style={styles.resultWrapper}>
-                              = <Text style={styles.result}>{item.result}</Text>
-                            </Text>
-                        </View>
-                    </View>}
-                  />
-
-                  <View style={ styles.answerListWrapper }>
-                    <FlatList
-                      contentContainerStyle={styles.answerList}
-                      data={this.state.game.results}
-                      renderItem={({item}) =>
-                       <View style={styles.playBtn}>
-                          <Button
-                            containerStyle={styles.answerBtn}
-                            style={styles.answerBtnText}
-                            onPress={() => this.checkAnswer(item)}>
-                            {item}
-                          </Button>
-                        </View>}
-                      />
-                  </View>
-              </View>
-          </View>
-          </Image>
-        );
-    }
+                     <View style={styles.playBtn}>
+                        <Button
+                          containerStyle={styles.answerBtn}
+                          style={styles.answerBtnText}
+                          onPress={() => this.checkAnswer(item)}>
+                          {item}
+                        </Button>
+                      </View>}
+                    />
+                </View>
+            </View>
+        </View>
+        </Image>
+      );
+  }
 }

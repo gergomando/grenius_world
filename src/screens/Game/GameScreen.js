@@ -16,12 +16,8 @@ export default class GameScreen extends React.Component {
 
   getGame = gameType => {
   	var Game = components[gameType];
-		return <Game />;
+		return <Game navigation={this.props.navigation} />;
   }
 
-  render() {
-    return (
-       this.getGame(this.gameType)
-    );
-	}
+  render = () => this.getGame(this.gameType);
 }

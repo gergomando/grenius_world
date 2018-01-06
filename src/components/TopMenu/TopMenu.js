@@ -41,18 +41,25 @@ export default class TopMenu extends React.Component {
   render() {
     let { lastPointOpacity } = this.state;
     return (
-      <View style={styles.mainMenu}>
-        <GameTimer interval="120" />
-        <Text style={styles.point}>
-          <Image style={styles.pointIcon}  source={require('../../assets/info_icon.png')} />
-          {this.padPoint(this.props.point, 5)}
-        </Text>
-
-        <Animated.View style={{ opacity: lastPointOpacity }}>
-          <Text style={styles.lastPoint}>
-            {this.state.lastPoint}
+      <View >
+        <View style={styles.mainMenu}>
+          <GameTimer interval="120" />
+          <Text style={styles.point}>
+            <Image style={styles.pointIcon}  source={require('../../assets/info_icon.png')} />
+            {this.padPoint(this.props.point, 5)}
           </Text>
-        </Animated.View>
+          <Animated.View style={{ opacity: lastPointOpacity }}>
+            <Text style={styles.lastPoint}>
+              {this.state.lastPoint}
+            </Text>
+          </Animated.View>
+        </View>
+        <View style={styles.levelMenu}>
+          <Text style={styles.level}>
+            {this.props.roundNr}/
+            <Text style={styles.rightAnswerNr}>{this.props.rightAnswerNr}</Text>        
+          </Text>
+        </View>
       </View>
     );
   }

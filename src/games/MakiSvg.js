@@ -13,12 +13,19 @@ export default class MakiSvg extends React.Component {
     super(props);
     this.state = {
       circleRadius: new Animated.Value(20),
+      mouthPos: new Animated.Value(40),
     };
 
     this.state.circleRadius.addListener((circleRadius) => {
       this.pupilLeft.setNativeProps({ r: circleRadius.value.toString() });
       this.pupilRight.setNativeProps({ r: circleRadius.value.toString() });
     });
+
+    this.state.mouthPos.addListener((mouthPos) => {
+      const d = `M126,198.9c0,0,${mouthPos.value.toString()},28.9,43.7-2.4`;
+      this.mouth.setNativeProps({ d });
+    });
+
   }
 
   animatePupil() {
@@ -32,6 +39,28 @@ export default class MakiSvg extends React.Component {
             delay: 0,
             toValue: 20,
             duration: 650,
+          })
+        ]),
+        {
+          iterations: 1
+        }
+    ).start();
+
+    Animated.loop(
+        Animated.sequence([
+          Animated.timing(this.state.mouthPos, {
+            toValue: 45,
+            duration: 450,
+          }),
+          Animated.timing(this.state.mouthPos, {
+            delay: 0,
+            toValue: 0,
+            duration: 450,
+          }),
+         Animated.timing(this.state.mouthPos, {
+            delay: 0,
+            toValue: 45,
+            duration: 450,
           })
         ]),
         {
@@ -66,7 +95,7 @@ export default class MakiSvg extends React.Component {
                 <Path fill="#f5f6f6" d="M81.6,149.9c0,0,24.3,0.2,33.6-15.7c7.4-12.6,16.2-25.4,8.1-42.4c-7.5-15.7-24.9-25.8-24.9-25.8L98,64.6
                   c0,0,22.8,2.4,28.5,16.1s17,17.4,8.1,42.4s-15.8,23.7-19.4,26.4c-9.4,7.2-23.5,9.5-26.7,5.2C85.2,150.4,85.6,158.5,81.6,149.9z"/>
                 
-                <Path fill="#E7949C" id="mouth" d="M126,198.9c0,0,41.3,28.9,43.7-2.4"/>
+                <Path ref={ ref => this.mouth = ref } d="M126,198.9c0,0,41.3,28.9,43.7-2.4" fill="#E7949C" id="mouth" />
                <Circle ref={ ref => this.pupilLeft = ref } cx="187" cy="110.5" r="20" fill="black" />
                <Circle ref={ ref => this.pupilRight = ref }  cx="87.6" cy="110.5" r="20" fill="black" />
                   
