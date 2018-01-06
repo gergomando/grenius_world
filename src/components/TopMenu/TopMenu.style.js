@@ -24,6 +24,12 @@ export default StyleSheet.create({
     alignSelf:'flex-end',
     justifyContent: 'flex-end',
   },
+  lastpoint: {
+    color:'#1ac92e',
+    alignSelf:'flex-end',
+    paddingRight:12,
+    fontSize:18,
+  },
   timer: {
     flex: 1,
     alignSelf: 'flex-start',

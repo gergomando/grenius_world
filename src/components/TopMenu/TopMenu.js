@@ -49,7 +49,7 @@ export default class TopMenu extends React.Component {
         </Text>
 
         <Animated.View style={{ opacity: lastPointOpacity }}>
-          <Text style={{color:'#1ac92e',alignSelf:'flex-end',paddingRight:12,fontSize:18}}>
+          <Text style={styles.lastPoint}>
             {this.state.lastPoint}
           </Text>
         </Animated.View>
