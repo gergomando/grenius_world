@@ -29,9 +29,6 @@ export default StyleSheet.create({
     alignItems:'center',
     paddingBottom:0,
   },
-  equationListWrapper: {
-    borderRadius:12,
-  },
   multiplierImage: {
     width:95, 
     alignItems:'center',
@@ -65,6 +62,21 @@ export default StyleSheet.create({
     justifyContent: 'center',
     marginTop:8,
   },
+  answerBtn: {
+    justifyContent: 'center',
+    height:60,
+    width:60,
+    overflow:'hidden',
+    borderRadius:30, 
+    backgroundColor:'rgba(242,167,5,0.2)',
+    borderWidth:2, 
+    borderColor:'#f2a705'
+  },
+  answerBtnText: {
+    fontSize: 18,
+    color: '#F9D300',
+    fontWeight:'bold',
+  },
   fontRed: {
     color: '#f00',
   },
@@ -73,5 +85,26 @@ export default StyleSheet.create({
   },
   maki: {
     alignSelf: 'center',
+  },
+  operator: {
+    width:36,
+    alignItems:'center',
+    fontSize: 32,
+    color:'#fff',
+    paddingTop:16,
+    paddingLeft:8,
+    paddingRight:8,
+    fontWeight:'bold',
+  },
+  resultWrapper: {
+    width:110,
+    fontSize: 32,
+    color:'#fff',
+    paddingTop:16,
+    paddingLeft:12,
+    fontWeight:'bold', 
+  },
+  result: {
+    color: '#f2a705',
   },
 });

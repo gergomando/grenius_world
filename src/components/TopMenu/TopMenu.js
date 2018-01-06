@@ -8,8 +8,7 @@ export default class TopMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pointView: '00000',
-      lastPoint: '+5',
+      lastPoint: 0,
       lastPointOpacity: new Animated.Value(0),
     };
   }
@@ -33,6 +32,12 @@ export default class TopMenu extends React.Component {
     ).start();
   }
 
+  padPoint(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+  }
+
   render() {
     let { lastPointOpacity } = this.state;
     return (
@@ -40,7 +45,7 @@ export default class TopMenu extends React.Component {
         <GameTimer interval="120" />
         <Text style={styles.point}>
           <Image style={styles.pointIcon}  source={require('../../assets/info_icon.png')} />
-          {this.state.pointView}
+          {this.padPoint(this.props.point, 5)}
         </Text>
 
         <Animated.View style={{ opacity: lastPointOpacity }}>
