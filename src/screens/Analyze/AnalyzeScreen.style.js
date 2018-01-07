@@ -38,7 +38,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     fontSize: 18,
   },
-  backgroundImage : {
+  bgImg : {
     flex:1,
     resizeMode:'cover',
     width:null,

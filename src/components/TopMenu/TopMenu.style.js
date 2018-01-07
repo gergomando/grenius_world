@@ -49,4 +49,9 @@ export default StyleSheet.create({
   rightAnswerNr: {
     color:'#1ac92e',
   },
+  starsWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+  }
 });

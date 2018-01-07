@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View, Image, StyleSheet, FlatList, Animated, AsyncStorage, Easing, Dimensions } from 'react-native';
 import Button from 'react-native-button';
 import styles from './Eatoo.style.js';
-import MakiSvg from "../MakiSvg";
+import Hero from "../Hero";
 import GameRow from "./GameRow";
 import TopMenu from '../../components/TopMenu/TopMenu';
 
@@ -101,7 +101,7 @@ export default class Eatoo extends React.Component {
           <View style={styles.gameColumns} >
               {this.renderGameRows()}
             <Animated.View  style={StyleSheet.flatten([styles.heroWrapper, {transform:[ {translateX : heroPosX } ]} ])} >
-              <MakiSvg style={styles.hero} height="70" animate={this.state.animatePupil} />
+              <Hero style={styles.hero} height="70" animate={this.state.animatePupil} />
             </Animated.View>
 
             <View style={styles.controllersWrapper}>

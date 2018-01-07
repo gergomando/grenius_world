@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View, Image, StyleSheet, FlatList } from 'react-native';
 import Button from 'react-native-button';
 import styles from './Varify.style.js';
-import MakiSvg from '../MakiSvg.js';
+import Hero from '../Hero.js';
 import TopMenu from '../../components/TopMenu/TopMenu';
 
 export default class Varify extends React.Component {
@@ -13,7 +13,7 @@ export default class Varify extends React.Component {
       games: [],
       current: 0,
       point: 0,
-      animatePupil: false,
+      animate: false,
       roundNr: 1,
       rightAnswerNr: 0,
     };
@@ -30,13 +30,13 @@ export default class Varify extends React.Component {
     const isRight = answer === this.state.game.answer;
     const rightAnswerNr = isRight ? this.state.rightAnswerNr + 1 : this.state.rightAnswerNr;
     if(isRight) {
-      this.setState({ animatePupil:true, rightAnswerNr });
+      this.setState({animate:'animateEyeSize', rightAnswerNr });
       this.changePoint(5);
     } else {
-      this.setState({animatePupil:false});
+      this.setState({animate:'animateDeadEye'});
       this.changePoint(-2);
     }
-    const isLastRound = this.state.roundNr === this.state.games.length;
+    const isLastRound = this.state.roundNr === 10;
     if(isLastRound) {
       const params = { roundNr: this.state.roundNr, rightAnswerNr };
       this.props.navigation.navigate('Analyze', {...params});
@@ -89,7 +89,7 @@ export default class Varify extends React.Component {
         <View style={styles.itemContainer}>
             <TopMenu point={this.state.point} roundNr={this.state.roundNr} rightAnswerNr={this.state.rightAnswerNr} />
             <View style={styles.maki}>
-              <MakiSvg height={100} animate={this.state.animatePupil} />
+              <Hero height={100} animate={this.state.animate} />
             </View>
             <Text style={styles.title}>
               Do <Text style={styles.fontYellow}>You</Text> know the <Text style={styles.fontRed}>answer?</Text>

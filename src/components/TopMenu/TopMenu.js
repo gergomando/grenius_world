@@ -3,6 +3,7 @@ import {Text, View, Image, Animated } from 'react-native';
 import Button from 'react-native-button';
 import styles from './TopMenu.style.js';
 import GameTimer from '../GameTimer/GameTimer';
+import Star from '../Animated/Star';
 
 export default class TopMenu extends React.Component {
   constructor(props) {
@@ -38,6 +39,17 @@ export default class TopMenu extends React.Component {
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
   }
 
+  getPercent = () => (this.props.rightAnswerNr/10)*100;
+  drawStars = () => {
+    const stars = [];
+    for(i = 1;i < 6; i++) {
+      const starPercent = i * 15;
+      const currentPercent = this.props.rightAnswerNr > 0 ? this.getPercent() : 0;
+      stars.push(<Star color="#f2a705" opacity={currentPercent > starPercent ? 1 : 0.4} />);
+    }
+    return stars.reverse();
+  }
+
   render() {
     let { lastPointOpacity } = this.state;
     return (
@@ -45,7 +57,6 @@ export default class TopMenu extends React.Component {
         <View style={styles.mainMenu}>
           <GameTimer interval="120" />
           <Text style={styles.point}>
-            <Image style={styles.pointIcon}  source={require('../../assets/info_icon.png')} />
             {this.padPoint(this.props.point, 5)}
           </Text>
           <Animated.View style={{ opacity: lastPointOpacity }}>
@@ -55,10 +66,9 @@ export default class TopMenu extends React.Component {
           </Animated.View>
         </View>
         <View style={styles.levelMenu}>
-          <Text style={styles.level}>
-            {this.props.roundNr}/
-            <Text style={styles.rightAnswerNr}>{this.props.rightAnswerNr}</Text>        
-          </Text>
+          <View style={styles.starsWrapper} >
+            {this.drawStars()}
+          </View>
         </View>
       </View>
     );
