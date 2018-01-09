@@ -21,7 +21,7 @@ export default class HomeScreen extends React.Component {
             <Button
               containerStyle={styles.playBtn} 
               style={styles.playBtnInside}
-              onPress={() => navigate('Game',{gameType: 'Varify'})}>
+              onPress={() => navigate('Game',{gameType: 'Eatoo'})}>
               Press to Play
             </Button>
           </View>

@@ -5,12 +5,10 @@ export default class Hamburger extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      enemyY: new Animated.Value(0),
+      enemyY: new Animated.Value(620),
     } 
 
-    this.state.enemyY.addListener((enemyY) => {
-        this.props.update(this.props.enemyKey, enemyY.value);
-    });
+    this.state.enemyY.addListener(enemyY => this.props.update(this.props.enemyKey, enemyY.value));
   }
 
   setPosY() {

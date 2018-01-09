@@ -20,16 +20,16 @@ export default class Eatoo extends React.Component {
       gameRows: [
         {items: [
           {type:'hamburger'},
-        ], posX:20, }, 
+        ], posX: 0, }, 
         {items: [
           {type:'hamburger'},
-        ], posX:100, }, 
+        ], posX: 120, }, 
         {items: [
           {type:'hamburger'},
         ], posX:180, }, 
         {items: [
           {type:'hamburger'},
-        ], posX:260, }, 
+        ], posX:240, }, 
       ],
     };
 
@@ -37,7 +37,14 @@ export default class Eatoo extends React.Component {
       heroSpeed : 40,
     }
     this.dimension = Dimensions.get('window');    
+    console.log(this.dimension.width/4)
     this.state.heroPosX.addListener(({value}) => this._value = value);
+  }
+
+  changePoint = (n) => {
+    let point = this.state.point + n;
+    point = point > 0 ? point : 0;
+    this.setState({ point });
   }
 
   setHeroPosX(x) {
@@ -80,11 +87,11 @@ export default class Eatoo extends React.Component {
         ]}>
         <GameRow 
           items={row.items} 
-          heroPosY={0} 
-          heroPosX={this.state.heroPosX}  
+          heroPos={{x: this.state.heroPosX._value, y: 0}}  
           rowX={row.posX}
           rowNumber={i+1}
           animatePupil={() => this.animatePupil()}
+          changePoint={this.changePoint}
           />
       </View>
     ))
