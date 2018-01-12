@@ -4,6 +4,7 @@ import Button from 'react-native-button';
 import styles from './TopMenu.style.js';
 import GameTimer from '../GameTimer/GameTimer';
 import Star from '../Animated/Star';
+import uuidv1 from 'uuid/v1';
 
 export default class TopMenu extends React.Component {
   constructor(props) {
@@ -45,7 +46,7 @@ export default class TopMenu extends React.Component {
     for(i = 1;i < 6; i++) {
       const starPercent = i * 15;
       const currentPercent = this.props.rightAnswerNr > 0 ? this.getPercent() : 0;
-      stars.push(<Star color="#f2a705" opacity={currentPercent > starPercent ? 1 : 0.4} />);
+      stars.push(<Star key={uuidv1()} color="#f2a705" opacity={currentPercent > starPercent ? 1 : 0.4} />);
     }
     return stars.reverse();
   }

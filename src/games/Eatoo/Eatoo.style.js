@@ -16,7 +16,7 @@ export default StyleSheet.create({
   },
   gameColumn: {
     flex: 1,
-    borderColor: 'transparent',
+    borderColor: 'red',
     borderWidth: 1,
     width: '25%',
     borderBottomWidth:0,
