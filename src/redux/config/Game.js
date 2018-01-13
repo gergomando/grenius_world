@@ -1,0 +1,2 @@
+export const CHANGE_POINT = 'CHANGE_POINT';
+export const ANIMATE_PUPIL = 'ANIMATE_PUPIL';

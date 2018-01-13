@@ -12,24 +12,22 @@ export default class Eatoo extends React.Component {
     super(props);
     this.dimension = Dimensions.get('window');    
     const gameRows = [
-      { items: [], posX: 40 },
-      { items: [], posX: 160 },
-      { items: [], posX: 280 },
-      { items: [], posX: 280 },
+      { items: [], posX: 50 },
+      { items: [], posX: 140 },
+      { items: [], posX: 230 },
+      { items: [], posX: 320 },
     ];
       
-    for(j = 0; j < 2; j++) {
+    for(j = 0; j < 4; j++) {
       for(i = 0; i < 9; i++) {
-        gameRows[j].items.push({type: 'hamburger'});
+        gameRows[j].items.push({type: 'Hamburger'});
+        gameRows[j].items.push({type: 'Mushroom'});
       }
     }
 
     this.state = {
-      point: 0,
-      lastPoint: '+5',
-      lastPointOpacity: new Animated.Value(0),
       animatePupil: false,
-      heroPosX:new Animated.Value(180),
+      heroPosX:new Animated.Value(35),
       gameRows,
     };
 
@@ -38,12 +36,7 @@ export default class Eatoo extends React.Component {
     }
     this.state.heroPosX.addListener(({value}) => this._value = value);
   }
-  changePoint = (n) => {
-    let point = this.state.point + n;
-    point = point > 0 ? point : 0;
-    this.setState({ point });
-  }
-
+  
   setHeroPosX(x) {
     if(this.dimension.width < (this.state.heroPosX._value + x + 50))
       return;
@@ -59,10 +52,6 @@ export default class Eatoo extends React.Component {
     } ).start();
   }
 
-  animatePupil() {
-    this.setState({ animatePupil : true });
-  }
-
   renderGameRows = () => {
     return this.state.gameRows.map((row,i) => (
       <View
@@ -74,21 +63,20 @@ export default class Eatoo extends React.Component {
         ]}>
         <GameRow
           items={row.items} 
-          hero={{x: this.state.heroPosX._value, y: 0}}  
+          hero={{x: this.state.heroPosX, y: 50 }}  
           rowX={row.posX}
-          changePoint={this.changePoint}
           />
       </View>
     ));
   }
 
   render() {
-    let { lastPointOpacity, heroPosX, gameRows } = this.state;
+    let { heroPosX, gameRows } = this.state;
     let { heroSpeed } = this.settings;
     return (
       <Image style={styles.backgroundImage}  source={require('../../assets/space_bg_dark.jpg')} >
         <View style={styles.itemContainer}>
-          <TopMenu point={this.state.point} />
+          <TopMenu stars={false} />
           <View style={styles.gameColumns} >
               {this.renderGameRows()}
             <Animated.View  style={StyleSheet.flatten([styles.heroWrapper, {transform:[ {translateX : heroPosX } ]} ])} >

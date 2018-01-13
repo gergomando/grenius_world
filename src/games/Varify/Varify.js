@@ -87,7 +87,7 @@ export default class Varify extends React.Component {
       return (
         <Image style={styles.backgroundImage}  source={require('../../assets/space_bg_dark.jpg')} >
         <View style={styles.itemContainer}>
-            <TopMenu point={this.state.point} roundNr={this.state.roundNr} rightAnswerNr={this.state.rightAnswerNr} />
+            <TopMenu stars point={this.state.point} roundNr={this.state.roundNr} rightAnswerNr={this.state.rightAnswerNr} />
             <View style={styles.maki}>
               <Hero height={100} animate={this.state.animate} />
             </View>

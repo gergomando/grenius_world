@@ -1,8 +1,12 @@
 import React from 'react';
 import {View, Animated } from 'react-native';
 import Svg,{ Circle,Ellipse, G, Line, Path, Polygon,Polyline,Rect,Symbol, Use, Defs, Stop} from 'react-native-svg';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { getCurrentAnimation } from '../redux/reducers/Game';
+import { animatePupil } from '../redux/actions/Game';
 
-export default class Hero extends React.Component {
+class Hero extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,10 +43,7 @@ export default class Hero extends React.Component {
             toValue: 20,
             duration: 1,
           })
-        ]),
-        {
-          iterations: 1
-        }
+        ]), {  iterations: 1 }
     ).start();
 
     Animated.loop(
@@ -105,6 +106,10 @@ export default class Hero extends React.Component {
   }
   
   render() {
+    if(this.props.animatePupil) {
+      this.animateEyeSize(); 
+      this.props.actions.animate(false);
+    } 
     if(this.props.animate && this[this.props.animate]) this[this.props.animate]();
         return (
           <View>
@@ -146,3 +151,18 @@ export default class Hero extends React.Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+  animatePupil: getCurrentAnimation(state),
+});
+    
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({
+    animate: animatePupil,
+  }, dispatch),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Hero);

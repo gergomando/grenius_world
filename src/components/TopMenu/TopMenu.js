@@ -5,35 +5,11 @@ import styles from './TopMenu.style.js';
 import GameTimer from '../GameTimer/GameTimer';
 import Star from '../Animated/Star';
 import uuidv1 from 'uuid/v1';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { getCurrentPoint } from '../../redux/reducers/Game';
 
-export default class TopMenu extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      lastPoint: 0,
-      lastPointOpacity: new Animated.Value(0),
-    };
-  }
-  
-  showLastPoint = () => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(this.state.lastPointOpacity, {
-          toValue: 1,
-          duration: 750,
-        }),
-        Animated.timing(this.state.lastPointOpacity, {
-          delay: 2500,
-          toValue: 0,
-          duration: 550,
-        })
-      ]),
-      {
-        iterations: 1
-      }
-    ).start();
-  }
-
+class TopMenu extends React.Component {
   padPoint(n, width, z) {
     z = z || '0';
     n = n + '';
@@ -52,7 +28,6 @@ export default class TopMenu extends React.Component {
   }
 
   render() {
-    let { lastPointOpacity } = this.state;
     return (
       <View >
         <View style={styles.mainMenu}>
@@ -60,18 +35,23 @@ export default class TopMenu extends React.Component {
           <Text style={styles.point}>
             {this.padPoint(this.props.point, 5)}
           </Text>
-          <Animated.View style={{ opacity: lastPointOpacity }}>
-            <Text style={styles.lastPoint}>
-              {this.state.lastPoint}
-            </Text>
-          </Animated.View>
         </View>
-        <View style={styles.levelMenu}>
-          <View style={styles.starsWrapper} >
+        {this.props.stars && 
+          <View style={styles.levelMenu}>
+           <View style={styles.starsWrapper}>
             {this.drawStars()}
           </View>
-        </View>
+        </View>}
       </View>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  point: getCurrentPoint(state),
+});
+
+export default connect(
+  mapStateToProps,
+  null,
+)(TopMenu);
