@@ -4,16 +4,26 @@ import timer from 'react-native-timer';
 import uuidv1 from 'uuid/v1';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changePoint } from '../../../redux/actions/Game';
-import { animateHero } from '../../../redux/actions/Game';
+import { changePoint } from '../../redux/actions/Game';
+import { animateHero } from '../../redux/actions/Game';
+import Hamburger from "./enemies/Hamburger";
+import Mushroom from "./enemies/Mushroom";
+import Twister from "./enemies/Twister";
 
-class Hamburger extends React.Component {
+const EnemyTypes = {
+  Mushroom,
+  Hamburger,
+  Twister,
+}
+
+class Enemy extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       enemyY: new Animated.Value(620),
       opacity: new Animated.Value(1),
     };
+    
 
     this.animation = Animated.timing(this.state.enemyY, {
       toValue:  -100,
@@ -22,7 +32,7 @@ class Hamburger extends React.Component {
 
     this.destroyAnimation = Animated.timing(this.state.opacity, {
       toValue:  0,
-      duration: 300, 
+      duration: 100, 
     });
 
     this.state.enemyY.addListener((enemyY) => {
@@ -54,21 +64,18 @@ class Hamburger extends React.Component {
   }
 
   render() {
-    return (
-      <Animated.Image source={require('../../../assets/hamburger.png')}
-        style={
-          { 
-            position: 'absolute',
-            height: 40, 
-            width:40,
-            opacity: this.state.opacity,
-            top: this.state.enemyY
-          }
-        } 
+    const EnemyType = EnemyTypes[this.props.type];
+    return ( 
+      <EnemyType
+        style={{ 
+          opacity:  1,
+          top: this.state.enemyY
+        }} 
       />
     );
   }
 }
+
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     changePoint,
@@ -79,4 +86,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   null,
   mapDispatchToProps,
-)(Hamburger);
+)(Enemy);

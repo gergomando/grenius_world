@@ -10,6 +10,10 @@ import { connect } from 'react-redux';
 import { getCurrentPoint } from '../../redux/reducers/Game';
 
 class TopMenu extends React.Component {
+  state = {
+    padPoint: false,
+  }
+
   padPoint(n, width, z) {
     z = z || '0';
     n = n + '';
@@ -34,7 +38,7 @@ class TopMenu extends React.Component {
           {this.props.timer &&
             <GameTimer interval="120" />}
           <Text style={styles.point}>
-            {this.padPoint(this.props.point, 5)}
+            {this.state.padPoint ? this.padPoint(this.props.point, 5) : this.props.point}
           </Text>
         </View>
         {this.props.stars && 

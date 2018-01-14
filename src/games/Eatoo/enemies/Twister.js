@@ -5,9 +5,9 @@ import uuidv1 from 'uuid/v1';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changePoint } from '../../../redux/actions/Game';
-import { animateHero } from '../../../redux/actions/Game';
+import { animateHero, changeBackground } from '../../../redux/actions/Game';
 
-class Hamburger extends React.Component {
+class Twister extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,7 +22,7 @@ class Hamburger extends React.Component {
 
     this.destroyAnimation = Animated.timing(this.state.opacity, {
       toValue:  0,
-      duration: 300, 
+      duration: 100, 
     });
 
     this.state.enemyY.addListener((enemyY) => {
@@ -33,6 +33,7 @@ class Hamburger extends React.Component {
         this.animation.stop();
         this.props.actions.changePoint(5);
         this.props.actions.animateHero('animateEyeSize');
+        this.props.actions.changeBackground('twisterBg');
       }
     });
 
@@ -55,7 +56,7 @@ class Hamburger extends React.Component {
 
   render() {
     return (
-      <Animated.Image source={require('../../../assets/hamburger.png')}
+      <Animated.Image source={require('../../../assets/twister.png')}
         style={
           { 
             position: 'absolute',
@@ -73,10 +74,11 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     changePoint,
     animateHero,
+    changeBackground,
   }, dispatch),
 });
 
 export default connect(
   null,
   mapDispatchToProps,
-)(Hamburger);
+)(Twister);

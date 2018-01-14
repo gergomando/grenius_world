@@ -1,14 +1,24 @@
 import React from 'react';
 import {Text, TouchableWithoutFeedback, View, Image, StyleSheet, FlatList, Animated, AsyncStorage, Easing, Dimensions } from 'react-native';
 import Button from 'react-native-button';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import uuidv1 from 'uuid/v1';
+import Random from 'random-js';
 import styles from './Eatoo.style.js';
 import Hero from "../Hero";
 import GameRow from "./GameRow";
 import TopMenu from '../../components/TopMenu/TopMenu';
-import uuidv1 from 'uuid/v1';
-import Random from 'random-js';
+import spaceBg from '../../assets/space_bg_dark.jpg';
+import twisterBg from '../../assets/twisted_bg.jpg';
+import { getBackground } from '../../redux/reducers/Game';
 
-export default class Eatoo extends React.Component {
+const Backgrounds = {
+  spaceBg,
+  twisterBg,
+}
+
+class Eatoo extends React.Component {
   constructor(props) {
     super(props);
     this.dimension = Dimensions.get('window');    
@@ -18,10 +28,10 @@ export default class Eatoo extends React.Component {
       { items: [], posX: 230 },
       { items: [], posX: 320 },
     ];
-    const types = ['Hamburger', 'Mushroom'];
+    const types = ['Empty', 'Hamburger' ,'Mushroom','Twister'];
     for(j = 0; j < 4; j++) {
       for(i = 0; i < 16; i++) {
-        gameRows[j].items.push({type: types[ new Random().integer(0,1)]});
+        gameRows[j].items.push({type: types[ new Random().integer(0,types.length-1)]});
       }
     }
 
@@ -31,7 +41,7 @@ export default class Eatoo extends React.Component {
     };
 
     this.settings = {
-      heroSpeed : 40,
+      heroSpeed : 50,
     }
     this.state.heroPosX.addListener(({value}) => this._value = value);
   }
@@ -73,7 +83,7 @@ export default class Eatoo extends React.Component {
     let { heroPosX, gameRows } = this.state;
     let { heroSpeed } = this.settings;
     return (
-      <Image style={styles.backgroundImage}  source={require('../../assets/space_bg_dark.jpg')} >
+      <Image style={styles.backgroundImage} source={Backgrounds[this.props.background]}>
         <View style={styles.itemContainer}>
           <TopMenu timer={false} stars={false} />
           <View style={styles.gameColumns} >
@@ -97,7 +107,7 @@ export default class Eatoo extends React.Component {
                 <Button
                   containerStyle={styles.controllerCircle}
                   style={{fontSize: 18, color: '#F9D300',fontWeight: 'bold'}}
-                  onPressIn={() => this.setHeroPosX(heroSpeed)}
+                  onPress={() => this.setHeroPosX(heroSpeed)}
                   >
                   Right
                 </Button>
@@ -109,3 +119,12 @@ export default class Eatoo extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  background : 'spaceBg',
+});
+
+export default connect(
+  mapStateToProps,
+  null,
+)(Eatoo);

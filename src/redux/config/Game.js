@@ -1,2 +1,3 @@
 export const CHANGE_POINT = 'CHANGE_POINT';
 export const ANIMATE_HERO = 'ANIMATE_HERO';
+export const CHANGE_BACKGROUND = 'CHANGE_BACKGROUND';

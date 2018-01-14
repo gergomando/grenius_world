@@ -3,11 +3,13 @@ import {View, Image, StyleSheet, Animated, Easing, Dimensions, Text } from 'reac
 import styles from './Eatoo.style.js';
 import Hamburger from "./enemies/Hamburger";
 import Mushroom from "./enemies/Mushroom";
+import Twister from "./enemies/Twister";
 import uuidv1 from 'uuid/v1';
 
 const EnemyTypes = {
   Mushroom,
   Hamburger,
+  Twister,
 }
 
 export default class GameRow extends React.Component {
@@ -22,6 +24,9 @@ export default class GameRow extends React.Component {
 
   drawItems = items => {
      const enemies = items.map((item, i) => {
+      if(item.type === 'Empty')
+        return false;
+
       const Enemy = EnemyTypes[item.type];
       return <Enemy
         key={uuidv1()}
@@ -36,7 +41,7 @@ export default class GameRow extends React.Component {
   }
   render() {
     return (
-      <View >
+      <View>
         {this.state.enemies}
       </View>
     );

@@ -5,7 +5,7 @@ import uuidv1 from 'uuid/v1';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changePoint } from '../../../redux/actions/Game';
-import { animateHero } from '../../../redux/actions/Game';
+import { animateHero, changeBackground } from '../../../redux/actions/Game';
 
 class Mushroom extends React.Component {
   constructor(props) {
@@ -48,7 +48,7 @@ class Mushroom extends React.Component {
   }
 
   setPosY() {
-    timer.setTimeout(uuidv1(), () => this.animation.start(), this.props.enemyKey*2000);
+    timer.setTimeout(uuidv1(), () => this.animation.start(), this.props.enemyKey*1500);
   }
 
   render() {
@@ -71,6 +71,7 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     changePoint,
     animateHero,
+    changeBackground,
   }, dispatch),
 });
 

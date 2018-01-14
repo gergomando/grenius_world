@@ -13,6 +13,7 @@ class Hero extends React.Component {
       eyeSize: new Animated.Value(20),
       tonguePos: new Animated.Value(40),
       deadEye: new Animated.Value(0),
+      pupilOpacity: new Animated.Value(1),
     };
 
     this.state.eyeSize.addListener((eyeSize) => {
@@ -25,97 +26,69 @@ class Hero extends React.Component {
       this.tongue.setNativeProps({ d });
     });
 
-    this.state.deadEye.addListener((deadEye) => {
-      const opacity = deadEye.value;
+    this.state.deadEye.addListener((pupilOpacity) => {
+      const opacity = pupilOpacity.value;
       this.deadEye.setNativeProps({ opacity });
     });
+
+    this.state.pupilOpacity.addListener((pupilOpacity) => {
+      const opacity = pupilOpacity.value;
+      this.pupilLeft.setNativeProps({ opacity });
+      this.pupilRight.setNativeProps({ opacity });
+    });
+
   }
 
-  animateDeadEye() {
-    Animated.loop(
-        Animated.sequence([
-          Animated.timing(this.state.eyeSize, {
-            toValue: 0,
-            duration: 10,
-            useNativeDriver: true,
-          }),
-          Animated.timing(this.state.eyeSize, {
-            delay: 750,
-            toValue: 20,
-            duration: 1,
-            useNativeDriver: true,
-          })
-        ]), {  iterations: 1 }
-    ).start();
-
-    Animated.loop(
-        Animated.sequence([
-          Animated.timing(this.state.deadEye, {
-            toValue: 1,
-            duration: 450,
-          }),
-          Animated.timing(this.state.deadEye, {
-            toValue: 0,
-            duration: 450,
-          })
-        ]),
-        {
-          iterations: 1
-        }
-    ).start();
+  animateDeadEye = ()  => {
+    return Animated.sequence([
+      Animated.timing(this.state.deadEye, {
+        toValue: 1,
+        duration: 350,
+      }),
+      Animated.timing(this.state.deadEye, {
+        toValue: 0,
+        duration: 350,
+      })
+    ]).start();
   }
 
-  animateEyeSize() {
-    Animated.loop(
-        Animated.sequence([
-          Animated.timing(this.state.eyeSize, {
-            toValue: 40,
-            duration: 450,
-            useNativeDriver: true,
-          }),
-          Animated.timing(this.state.eyeSize, {
-            delay: 0,
-            toValue: 20,
-            duration: 450,
-            useNativeDriver: true,
-          })
-        ]),
-        {
-          iterations: 1
-        }
-    ).start();
-
-    Animated.loop(
-        Animated.sequence([
-          Animated.timing(this.state.tonguePos, {
-            delay: 0,
-            toValue: 0,
-            duration: 450,
-          }),
-         Animated.timing(this.state.tonguePos, {
-            delay: 0,
-            toValue: 40,
-            duration: 450,
-          }),
-         Animated.timing(this.state.tonguePos, {
-            delay: 0,
-            toValue: 0,
-            duration: 450,
-          })
-        ]),
-        {
-          iterations: 1
-        }
-    ).start();
+  animateEyeSize = () => {
+    return Animated.sequence([
+      Animated.spring(this.state.eyeSize, {
+        toValue: 40,
+      }),
+      Animated.spring(this.state.eyeSize, {
+        toValue: 20,
+      })
+    ]).start();
   }
-  
-  render() {
+
+  animateTongue = () => {
+    return Animated.sequence([
+      Animated.timing(this.state.tonguePos, {
+        toValue: 0,
+        duration: 450,
+      }),
+     Animated.timing(this.state.tonguePos, {
+        toValue: 40,
+        duration: 450,
+      }),
+     Animated.timing(this.state.tonguePos, {
+        toValue: 0,
+        duration: 450,
+      })
+    ]).start();
+  }
+
+  componentDidUpdate() {
     if(this.props.animate && this[this.props.animate]) {
       this[this.props.animate]();
       this.props.actions.animateHero(false);
     }
+  }
+  render() {
     return (
-      <View renderToHardwareTextureAndroid>
+      <View>
       <Svg width={this.props.height ? (this.props.height*1.28) : 160} height={ this.props.height || 125} viewBox="0 0 320 250">
           <G>
             <Circle fill="#321E0F" cx="45.1" cy="49.5" r="45.1"/>
