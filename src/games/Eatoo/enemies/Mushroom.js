@@ -5,6 +5,7 @@ import uuidv1 from 'uuid/v1';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changePoint } from '../../../redux/actions/Game';
+import { animateHero } from '../../../redux/actions/Game';
 
 class Mushroom extends React.Component {
   constructor(props) {
@@ -31,16 +32,15 @@ class Mushroom extends React.Component {
         this.destroyAnimation.start();
         this.animation.stop();
         this.props.actions.changePoint(-2);
+        this.props.actions.animateHero('animateDeadEye');
       }
     });
-
   }
 
   enemyMeetHero = ({enemy,hero}) => {
-    let isMeet = false;
-    isMeet = (enemy.x < (hero.x + 50)) && !(hero.x > (enemy.x + 40)) ? true : false;
-    isMeet = isMeet && (enemy.y < hero.y) ? true : false;
-    return isMeet;
+    const isMeetX = (enemy.x < (hero.x + 50)) && !(hero.x > (enemy.x + 40)) ? true : false;
+    const isMeetY = isMeetX && (enemy.y < hero.y) ? true : false;
+    return isMeetY && isMeetX;
   }
 
   componentDidMount() {
@@ -48,7 +48,7 @@ class Mushroom extends React.Component {
   }
 
   setPosY() {
-    timer.setTimeout(uuidv1(), () => this.animation.start(), this.props.enemyKey*1000);
+    timer.setTimeout(uuidv1(), () => this.animation.start(), this.props.enemyKey*2000);
   }
 
   render() {
@@ -70,6 +70,7 @@ class Mushroom extends React.Component {
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     changePoint,
+    animateHero,
   }, dispatch),
 });
 

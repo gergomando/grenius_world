@@ -17,7 +17,7 @@ export default createReducer(initialState, {
       point,
     };
   },
-  [GameActions.ANIMATE_PUPIL](state, action) {
+  [GameActions.ANIMATE_HERO](state, action) {
     return { 
       ...state,
       animate: action.animation,

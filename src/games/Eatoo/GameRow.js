@@ -15,11 +15,6 @@ export default class GameRow extends React.Component {
     counter: 0,
     enemies: [],
   };
-
-  updateEnemeyPosition = (i,posY) => {
-    if(this.enemyMeetHero({x: this.props.rowX, y: posY})) {
-    }
-  }
   
   componentDidMount() {
     this.drawItems(this.props.items);
@@ -30,7 +25,6 @@ export default class GameRow extends React.Component {
       const Enemy = EnemyTypes[item.type];
       return <Enemy
         key={uuidv1()}
-        update={this.updateEnemeyPosition}          
         enemyKey={i}
         animate={true}
         hero={this.props.hero}

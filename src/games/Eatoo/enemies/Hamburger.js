@@ -5,7 +5,7 @@ import uuidv1 from 'uuid/v1';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changePoint } from '../../../redux/actions/Game';
-import { animatePupil } from '../../../redux/actions/Game';
+import { animateHero } from '../../../redux/actions/Game';
 
 class Hamburger extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class Hamburger extends React.Component {
         this.destroyAnimation.start();
         this.animation.stop();
         this.props.actions.changePoint(5);
-        this.props.actions.animate('animatePupil');
+        this.props.actions.animateHero('animateEyeSize');
       }
     });
 
@@ -50,7 +50,7 @@ class Hamburger extends React.Component {
   }
 
   setPosY() {
-    timer.setTimeout(uuidv1(), () => this.animation.start(), this.props.enemyKey*1000);
+    timer.setTimeout(uuidv1(), () => this.animation.start(), this.props.enemyKey*2000);
   }
 
   render() {
@@ -72,7 +72,7 @@ class Hamburger extends React.Component {
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     changePoint,
-    animate: animatePupil,
+    animateHero,
   }, dispatch),
 });
 

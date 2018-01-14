@@ -1,6 +1,6 @@
 import {
   CHANGE_POINT,
-  ANIMATE_PUPIL,
+  ANIMATE_HERO,
 } from '../config/Game.js';
 
 export const changePoint = (point) => (
@@ -12,10 +12,10 @@ export const changePoint = (point) => (
   }
 );
 
-export const animatePupil = (animation) => (
+export const animateHero = (animation) => (
   (dispatch) => {
     dispatch({
-      type: ANIMATE_PUPIL,
+      type: ANIMATE_HERO,
       animation,
     });
   }

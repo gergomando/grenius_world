@@ -6,6 +6,7 @@ import Hero from "../Hero";
 import GameRow from "./GameRow";
 import TopMenu from '../../components/TopMenu/TopMenu';
 import uuidv1 from 'uuid/v1';
+import Random from 'random-js';
 
 export default class Eatoo extends React.Component {
   constructor(props) {
@@ -17,16 +18,14 @@ export default class Eatoo extends React.Component {
       { items: [], posX: 230 },
       { items: [], posX: 320 },
     ];
-      
+    const types = ['Hamburger', 'Mushroom'];
     for(j = 0; j < 4; j++) {
-      for(i = 0; i < 9; i++) {
-        gameRows[j].items.push({type: 'Hamburger'});
-        gameRows[j].items.push({type: 'Mushroom'});
+      for(i = 0; i < 16; i++) {
+        gameRows[j].items.push({type: types[ new Random().integer(0,1)]});
       }
     }
 
     this.state = {
-      animatePupil: false,
       heroPosX:new Animated.Value(35),
       gameRows,
     };
@@ -76,7 +75,7 @@ export default class Eatoo extends React.Component {
     return (
       <Image style={styles.backgroundImage}  source={require('../../assets/space_bg_dark.jpg')} >
         <View style={styles.itemContainer}>
-          <TopMenu stars={false} />
+          <TopMenu timer={false} stars={false} />
           <View style={styles.gameColumns} >
               {this.renderGameRows()}
             <Animated.View  style={StyleSheet.flatten([styles.heroWrapper, {transform:[ {translateX : heroPosX } ]} ])} >

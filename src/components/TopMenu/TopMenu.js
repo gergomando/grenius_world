@@ -31,7 +31,8 @@ class TopMenu extends React.Component {
     return (
       <View >
         <View style={styles.mainMenu}>
-          <GameTimer interval="120" />
+          {this.props.timer &&
+            <GameTimer interval="120" />}
           <Text style={styles.point}>
             {this.padPoint(this.props.point, 5)}
           </Text>
