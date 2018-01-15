@@ -35,12 +35,3 @@ export const updateGame = (game) => (
     });
   }
 );
-
-export const updateHero = (hero) => (
-  (dispatch) => {
-    dispatch({
-      type: GameActions.UPDATE_HERO,
-      hero,
-    });
-  }
-);

@@ -1,0 +1,2 @@
+export const UPDATE_HERO = 'UPDATE_HERO';
+export const UPDATE_HERO_POSITION = 'UPDATE_HERO_POSITION';

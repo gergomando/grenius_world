@@ -34,31 +34,4 @@ export default StyleSheet.create({
     width:40,
     position:'absolute',
   },
-  heroWrapper: {
-    position: 'absolute',
-    left: 0,
-    top:15,
-  },
-  hero: {
-    height:50,
-  },
-  controllersWrapper: {
-    position: 'absolute',
-    bottom: 40,
-    right: 40,
-    flexDirection: 'row',
-  },
-  controllersBtn: {
-    padding: 8,
-  },
-  controllerCircle: {
-    justifyContent: 'center', 
-    height:60,
-    width:60,
-    overflow:'hidden',
-    borderRadius:30,
-    backgroundColor:'rgba(242,167,5,0.2)',
-    borderWidth:2, 
-    borderColor:'#f2a705',
-  },
 });

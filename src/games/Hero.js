@@ -1,14 +1,17 @@
 import React from 'react';
-import {View, Animated } from 'react-native';
-import Svg,{ Circle,Ellipse, G, Line, Path, Polygon,Polyline,Rect,Symbol, Use, Defs, Stop} from 'react-native-svg';
+import { StyleSheet, Animated } from 'react-native';
+import Svg,{ Circle,Ellipse, G, Line, Path } from 'react-native-svg';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getCurrentAnimation } from '../redux/reducers/Game';
+import { getX } from '../redux/reducers/Hero';
 import { animateHero } from '../redux/actions/Game';
+import styles from './Hero.style';
 
 class Hero extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       eyeSize: new Animated.Value(20),
       tonguePos: new Animated.Value(40),
@@ -80,6 +83,23 @@ class Hero extends React.Component {
     ]).start();
   }
 
+  animatePosition = () => {
+    return Animated.sequence([
+      Animated.timing(this.state.tonguePos, {
+        toValue: 0,
+        duration: 450,
+      }),
+      Animated.timing(this.state.tonguePos, {
+        toValue: 40,
+        duration: 450,
+      }),
+      Animated.timing(this.state.tonguePos, {
+        toValue: 0,
+        duration: 450,
+      })
+    ]).start();
+  }
+
   componentDidUpdate() {
     if(this.props.animate && this[this.props.animate]) {
       this[this.props.animate]();
@@ -88,8 +108,12 @@ class Hero extends React.Component {
   }
   render() {
     return (
-      <View>
-      <Svg width={this.props.height ? (this.props.height*1.28) : 160} height={ this.props.height || 125} viewBox="0 0 320 250">
+      <Animated.View  style={StyleSheet.flatten([
+        styles.heroWrapper,
+        { transform: [{translateX : this.props.x }] }
+      ])}
+      >
+        <Svg width={this.props.height ? (this.props.height*1.28) : 160} height={ this.props.height || 125} viewBox="0 0 320 250">
           <G>
             <Circle fill="#321E0F" cx="45.1" cy="49.5" r="45.1"/>
             <Circle fill="#633A23" cx="50.3" cy="54.7" r="30.7"/>
@@ -123,13 +147,14 @@ class Hero extends React.Component {
             </G>
           </G>
           </Svg>
-      </View>
+      </Animated.View>
     );
   }
 }
 
 const mapStateToProps = state => ({
   animate : getCurrentAnimation(state),
+  x: getX(state),
 });
     
 const mapDispatchToProps = dispatch => ({

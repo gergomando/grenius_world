@@ -1,17 +1,16 @@
 import React from 'react';
-import { View, Image, StyleSheet, Animated, Dimensions } from 'react-native';
-import Button from 'react-native-button';
+import { View, Image } from 'react-native';
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1';
 import Random from 'random-js';
-import styles from './Eatoo.style.js';
+import styles from './Eatoo.style';
 import Hero from "../Hero";
 import GameRow from "./GameRow";
 import TopMenu from '../../components/TopMenu/TopMenu';
+import Controllers from '../../components/Controllers/Controllers';
 import spaceBg from '../../assets/space_bg_dark.jpg';
 import twisterBg from '../../assets/twisted_bg.jpg';
 import { getBackground } from '../../redux/reducers/Game';
-import { getHero } from '../../redux/reducers/Game';
 
 const Backgrounds = {
   spaceBg,
@@ -21,7 +20,6 @@ const Backgrounds = {
 class Eatoo extends React.Component {
   constructor(props) {
     super(props);
-    this.dimension = Dimensions.get('window');    
     const gameRows = [
       { items: [], posX: 50 },
       { items: [], posX: 140 },
@@ -35,28 +33,7 @@ class Eatoo extends React.Component {
       }
     }
 
-    this.state = {
-      heroPosX: new Animated.Value(35),
-      gameRows,
-    };
-
-    this.settings = { heroSpeed: 50 };
-    this.state.heroPosX.addListener(({value}) => this._value = value);
-  }
-  
-  setHeroPosX(x) {
-    if(this.dimension.width < (this.state.heroPosX._value + x + 50))
-      return;
-    
-    if((this.state.heroPosX._value + (x)) < 10) {
-      return Animated.spring(this.state.heroPosX, {
-        toValue: 10,
-      }).start();
-    }
-
-    Animated.spring(this.state.heroPosX, {
-      toValue: this.state.heroPosX._value + x,
-    } ).start();
+    this.state = { gameRows };
   }
 
   renderGameRows = () => {
@@ -70,7 +47,6 @@ class Eatoo extends React.Component {
         ]}>
         <GameRow
           items={row.items} 
-          hero={{x: this.state.heroPosX, y: 50 }}  
           rowX={row.posX}
           />
       </View>
@@ -78,42 +54,14 @@ class Eatoo extends React.Component {
   }
 
   render() {
-    let { heroSpeed } = this.settings;
     return (
       <Image style={styles.backgroundImage} source={Backgrounds[this.props.background]}>
         <View style={styles.itemContainer}>
           <TopMenu timer={false} stars={false} />
           <View style={styles.gameColumns} >
               {this.renderGameRows()}
-            <Animated.View  style={StyleSheet.flatten([
-              styles.heroWrapper,
-              { transform: [{translateX : this.state.heroPosX }] }
-              ])}
-            >
-              <Hero style={styles.hero} height="70" animate={false} />
-            </Animated.View>
-
-            <View style={styles.controllersWrapper}>
-              <View style={styles.controllersBtn}>
-                <Button
-                  containerStyle={styles.controllerCircle}
-                  style={{fontSize: 18, color: '#F9D300',fontWeight: 'bold'}}
-                  onPress={() => this.setHeroPosX(-heroSpeed)}
-                  >
-                  Left
-                </Button>
-              </View>
-
-              <View style={styles.controllersBtn}>
-                <Button
-                  containerStyle={styles.controllerCircle}
-                  style={{fontSize: 18, color: '#F9D300',fontWeight: 'bold'}}
-                  onPress={() => this.setHeroPosX(heroSpeed)}
-                  >
-                  Right
-                </Button>
-              </View>
-            </View>
+            <Hero style={styles.hero} height="70" animate={false} />
+            <Controllers />
           </View>
         </View>
       </Image>
@@ -123,7 +71,6 @@ class Eatoo extends React.Component {
 
 const mapStateToProps = state => ({
   background: getBackground(state),
-  hero: getHero(state),
 });
 
 export default connect(

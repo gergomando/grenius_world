@@ -1,16 +1,7 @@
 import React from 'react';
-import {View, Image, StyleSheet, Animated, Easing, Dimensions, Text } from 'react-native';
-import styles from './Eatoo.style.js';
-import Hamburger from "./enemies/Hamburger";
-import Mushroom from "./enemies/Mushroom";
-import Twister from "./enemies/Twister";
+import {View } from 'react-native';
+import Enemy from './Enemy';
 import uuidv1 from 'uuid/v1';
-
-const EnemyTypes = {
-  Mushroom,
-  Hamburger,
-  Twister,
-}
 
 export default class GameRow extends React.Component {
   state = {
@@ -27,18 +18,18 @@ export default class GameRow extends React.Component {
       if(item.type === 'Empty')
         return false;
 
-      const Enemy = EnemyTypes[item.type];
       return <Enemy
         key={uuidv1()}
         enemyKey={i}
         animate={true}
-        hero={this.props.hero}
+        type={item.type}
         enemy={{x: this.props.rowX, y: 620}}
       />;
     });
     
     this.setState({ enemies });
   }
+
   render() {
     return (
       <View>
