@@ -1,7 +1,6 @@
 import React from 'react';
-import {Text, TouchableWithoutFeedback, View, Image, StyleSheet, FlatList, Animated, AsyncStorage, Easing, Dimensions } from 'react-native';
+import { View, Image, StyleSheet, Animated, Dimensions } from 'react-native';
 import Button from 'react-native-button';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1';
 import Random from 'random-js';
@@ -12,6 +11,7 @@ import TopMenu from '../../components/TopMenu/TopMenu';
 import spaceBg from '../../assets/space_bg_dark.jpg';
 import twisterBg from '../../assets/twisted_bg.jpg';
 import { getBackground } from '../../redux/reducers/Game';
+import { getHero } from '../../redux/reducers/Game';
 
 const Backgrounds = {
   spaceBg,
@@ -36,13 +36,11 @@ class Eatoo extends React.Component {
     }
 
     this.state = {
-      heroPosX:new Animated.Value(35),
+      heroPosX: new Animated.Value(35),
       gameRows,
     };
 
-    this.settings = {
-      heroSpeed : 50,
-    }
+    this.settings = { heroSpeed: 50 };
     this.state.heroPosX.addListener(({value}) => this._value = value);
   }
   
@@ -80,7 +78,6 @@ class Eatoo extends React.Component {
   }
 
   render() {
-    let { heroPosX, gameRows } = this.state;
     let { heroSpeed } = this.settings;
     return (
       <Image style={styles.backgroundImage} source={Backgrounds[this.props.background]}>
@@ -88,8 +85,12 @@ class Eatoo extends React.Component {
           <TopMenu timer={false} stars={false} />
           <View style={styles.gameColumns} >
               {this.renderGameRows()}
-            <Animated.View  style={StyleSheet.flatten([styles.heroWrapper, {transform:[ {translateX : heroPosX } ]} ])} >
-              <Hero style={styles.hero} height="70" animate={this.state.animatePupil} />
+            <Animated.View  style={StyleSheet.flatten([
+              styles.heroWrapper,
+              { transform: [{translateX : this.state.heroPosX }] }
+              ])}
+            >
+              <Hero style={styles.hero} height="70" animate={false} />
             </Animated.View>
 
             <View style={styles.controllersWrapper}>
@@ -121,7 +122,8 @@ class Eatoo extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  background : 'spaceBg',
+  background: getBackground(state),
+  hero: getHero(state),
 });
 
 export default connect(

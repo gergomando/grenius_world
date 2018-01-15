@@ -40,10 +40,9 @@ class Twister extends React.Component {
   }
 
   enemyMeetHero = ({enemy,hero}) => {
-    let isMeet = false;
-    isMeet = (enemy.x < (hero.x + 50)) && !(hero.x > (enemy.x + 40)) ? true : false;
-    isMeet = isMeet && (enemy.y < hero.y) ? true : false;
-    return isMeet;
+    const isMeetX = (enemy.x < (hero.x + 50)) && !(hero.x > (enemy.x + 40));
+    const isMeetY = isMeetX && (enemy.y < hero.y);
+    return isMeetY && isMeetX;
   }
 
   componentDidMount() {

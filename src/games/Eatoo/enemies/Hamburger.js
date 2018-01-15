@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changePoint } from '../../../redux/actions/Game';
 import { animateHero } from '../../../redux/actions/Game';
+import { updateGame } from '../../../redux/actions/Game';
 
 class Hamburger extends React.Component {
   constructor(props) {
@@ -31,18 +32,18 @@ class Hamburger extends React.Component {
       if(this.enemyMeetHero({enemy, hero})) {
         this.destroyAnimation.start();
         this.animation.stop();
-        this.props.actions.changePoint(5);
-        this.props.actions.animateHero('animateEyeSize');
+        this.props.actions.updateGame({
+          changePoint: 5,
+          animateHero: 'animateEyeSize',
+        });
       }
     });
-
   }
 
   enemyMeetHero = ({enemy,hero}) => {
-    let isMeet = false;
-    isMeet = (enemy.x < (hero.x + 50)) && !(hero.x > (enemy.x + 40)) ? true : false;
-    isMeet = isMeet && (enemy.y < hero.y) ? true : false;
-    return isMeet;
+    const isMeetX = (enemy.x < (hero.x + 50)) && !(hero.x > (enemy.x + 40));
+    const isMeetY = isMeetX && (enemy.y < hero.y);
+    return isMeetY && isMeetX;
   }
 
   componentDidMount() {
@@ -73,6 +74,7 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     changePoint,
     animateHero,
+    updateGame,
   }, dispatch),
 });
 

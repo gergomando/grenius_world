@@ -1,13 +1,9 @@
-import {
-  CHANGE_POINT,
-  ANIMATE_HERO,
-  CHANGE_BACKGROUND,
-} from '../config/Game.js';
+import * as GameActions from '../config/Game.js';
 
 export const changePoint = (point) => (
   (dispatch) => {
     dispatch({
-      type: CHANGE_POINT,
+      type: GameActions.CHANGE_POINT,
       point,
     });
   }
@@ -16,7 +12,7 @@ export const changePoint = (point) => (
 export const animateHero = (animation) => (
   (dispatch) => {
     dispatch({
-      type: ANIMATE_HERO,
+      type: GameActions.ANIMATE_HERO,
       animation,
     });
   }
@@ -25,8 +21,26 @@ export const animateHero = (animation) => (
 export const changeBackground = (background) => (
   (dispatch) => {
     dispatch({
-      type: CHANGE_BACKGROUND,
+      type: GameActions.CHANGE_BACKGROUND,
       background,
+    });
+  }
+);
+
+export const updateGame = (game) => (
+  (dispatch) => {
+    dispatch({
+      type: GameActions.UPDATE_GAME,
+      game,
+    });
+  }
+);
+
+export const updateHero = (hero) => (
+  (dispatch) => {
+    dispatch({
+      type: GameActions.UPDATE_HERO,
+      hero,
     });
   }
 );

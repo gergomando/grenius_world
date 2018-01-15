@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, StyleSheet, Animated, Easing} from 'react-native';
+import { Animated } from 'react-native';
 import timer from 'react-native-timer';
 import uuidv1 from 'uuid/v1';
 import { bindActionCreators } from 'redux';
@@ -38,8 +38,8 @@ class Mushroom extends React.Component {
   }
 
   enemyMeetHero = ({enemy,hero}) => {
-    const isMeetX = (enemy.x < (hero.x + 50)) && !(hero.x > (enemy.x + 40)) ? true : false;
-    const isMeetY = isMeetX && (enemy.y < hero.y) ? true : false;
+    const isMeetX = (enemy.x < (hero.x + 50)) && !(hero.x > (enemy.x + 40));
+    const isMeetY = isMeetX && (enemy.y < hero.y);
     return isMeetY && isMeetX;
   }
 
