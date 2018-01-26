@@ -10,8 +10,8 @@ export default class Hamburger extends React.Component {
           position: 'absolute',
           height: 40,
           width:40,
-          opacity: this.props.opacity,
-          top: this.props.top
+          opacity: this.props.opacity || 1,
+          top: this.props.top || 40,
         }}
       />
     );

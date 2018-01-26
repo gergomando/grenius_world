@@ -11,6 +11,8 @@ import Controllers from '../../components/Controllers/Controllers';
 import spaceBg from '../../assets/space_bg_dark.jpg';
 import twisterBg from '../../assets/twisted_bg.jpg';
 import { getBackground } from '../../redux/reducers/Game';
+import PropTypes from 'prop-types';
+import { getX } from '../../redux/reducers/Hero';
 
 const Backgrounds = {
   spaceBg,
@@ -21,7 +23,7 @@ class Eatoo extends React.Component {
   constructor(props) {
     super(props);
     const gameRows = [
-      { items: [], posX: 50 },
+      { items: [], posX: 20 },
       { items: [], posX: 140 },
       { items: [], posX: 230 },
       { items: [], posX: 320 },
@@ -36,6 +38,17 @@ class Eatoo extends React.Component {
     this.state = { gameRows };
   }
 
+  static contextTypes = {
+    loop: PropTypes.object,
+  };
+
+  componentDidMount() {
+    this.context.loop.subscribe(this.update);
+  }
+
+  update() {
+  };
+
   renderGameRows = () => {
     return this.state.gameRows.map((row,i) => (
       <View
@@ -48,6 +61,7 @@ class Eatoo extends React.Component {
         <GameRow
           items={row.items} 
           rowX={row.posX}
+          loop={this.context.loop}
           />
       </View>
     ));
@@ -68,9 +82,9 @@ class Eatoo extends React.Component {
     );
   }
 }
-
 const mapStateToProps = state => ({
   background: getBackground(state),
+  hero: { x: getX(state), y: 50 },
 });
 
 export default connect(

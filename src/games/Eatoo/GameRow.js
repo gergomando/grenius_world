@@ -13,6 +13,12 @@ export default class GameRow extends React.Component {
     this.drawItems(this.props.items);
   }
 
+
+  update = enemy => {
+    console.log(enemy);
+
+  }
+
   drawItems = items => {
      const enemies = items.map((item, i) => {
       if(item.type === 'Empty')
@@ -23,6 +29,8 @@ export default class GameRow extends React.Component {
         enemyKey={i}
         animate={true}
         type={item.type}
+        loop={this.props.loop}
+        update={this.update}
         enemy={{x: this.props.rowX, y: 620}}
       />;
     });

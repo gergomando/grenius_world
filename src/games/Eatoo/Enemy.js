@@ -39,25 +39,32 @@ class Enemy extends React.Component {
     this.state.enemyY.addListener((enemyY) => {
       const enemy = { x: this.props.enemy.x , y: enemyY.value };
       const hero = { x: this.props.hero.x, y: this.props.hero.y};
-      if(this.enemyMeetHero({enemy, hero})) {
-        this.destroyAnimation.start();
-        this.animation.stop();
-        this.props.actions.updateGame({
-          point: 5,
-          animate: 'animateEyeSize',
-        });
-      }
+     
     });
   }
 
-  enemyMeetHero = ({enemy,hero}) => {
-    const isMeetX = (enemy.x < (hero.x + 50)) && !(hero.x > (enemy.x + 40));
-    const isMeetY = isMeetX && (enemy.y < hero.y);
-    return isMeetY && isMeetX;
+  enemyMeetHero = (enemy,hero) => {
+    return true;
   }
 
   componentDidMount() {
     this.props.animate && this.setPosY();
+    const components = {
+      enemy: { x: this.props.enemy.x , y: this.state.enemyY },
+      hero: { x: this.props.hero.x, y: this.props.hero.y},
+    };
+    this.props.loop.subscribe(() => this.update(components));
+  }
+
+  update({ enemy, hero }){
+    if(this.enemyMeetHero(enemy, hero)) {
+      console.log(1);
+      this.animation.stop();
+      this.props.actions.updateGame({
+        point: 5,
+        animate: 'animateEyeSize',
+      });
+    }
   }
 
   setPosY() {

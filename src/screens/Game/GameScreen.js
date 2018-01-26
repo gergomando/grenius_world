@@ -1,10 +1,10 @@
 import React from 'react';
 import Varify from '../../games/Varify/Varify';
 import Eatoo from '../../games/Eatoo/Eatoo';
+import GameLoop from '../../games/Gameloop';
 
 const components = {
   Varify,
-  Eatoo
 };
 
 export default class GameScreen extends React.Component {
@@ -19,5 +19,5 @@ export default class GameScreen extends React.Component {
 		return <Game navigation={this.props.navigation} />;
   }
 
-  render = () => this.getGame(this.gameType);
+  render = () => <GameLoop navigation={this.props.navigation} />;
 }
